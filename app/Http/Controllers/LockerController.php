@@ -27,7 +27,8 @@ class LockerController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $locker = Locker::create($request->only('guid'));
+        return new LockerResource($locker);
     }
 
     /**
@@ -51,7 +52,9 @@ class LockerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $locker = Locker::findOrFail($id);
+        $locker->update($request->only('guid'));
+        return new LockerResource($locker);
     }
 
     /**
@@ -62,6 +65,8 @@ class LockerController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $locker = Locker::findOrFail($id);
+        $locker->delete();
+        return new LockerResource($locker);
     }
 }
