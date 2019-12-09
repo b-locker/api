@@ -27,6 +27,7 @@ class LockerController extends Controller
      */
     public function store(Request $request)
     {
+        $json = json_decode(($request->getContent()));
         $locker = Locker::create($request->only('guid'));
         return new LockerResource($locker);
     }
@@ -67,6 +68,8 @@ class LockerController extends Controller
     {
         $locker = Locker::findOrFail($id);
         $locker->delete();
-        return new LockerResource($locker);
+        return response()->json([
+            'message' => 'OK.',
+        ]);
     }
 }

@@ -10,12 +10,12 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 class IndexTest extends TestCase
 {
     use RefreshDatabase;
-    
+
     public function test_can_get_collection()
     {
         $lockers = factory(Locker::class, 3)->create();
 
-        $this->json('GET', route('lockers'))
+        $this->json('GET', route('lockers.index'))
             ->assertStatus(200)
             ->assertExactJson([
                 'data' => $lockers->map(function ($locker) {

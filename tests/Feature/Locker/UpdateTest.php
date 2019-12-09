@@ -7,15 +7,18 @@ use App\Models\Locker;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class ShowTest extends TestCase
+class UpdateTest extends TestCase
 {
-    use RefreshDatabase;
-
-    public function test_can_get_1_model()
+    /**
+     * A basic feature test example.
+     *
+     * @return void
+     */
+    public function test_can_update_record()
     {
         $locker = factory(Locker::class)->create();
 
-        $this->json('GET', route('lockers.show', $locker->id))
+        $this->json('PUT', route('lockers.update', $locker->id))
             ->assertStatus(200)
             ->assertExactJson([
                 'data' => [

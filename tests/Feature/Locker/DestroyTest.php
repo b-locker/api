@@ -7,21 +7,22 @@ use App\Models\Locker;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class ShowTest extends TestCase
+class DestroyTest extends TestCase
 {
-    use RefreshDatabase;
-
-    public function test_can_get_1_model()
+    /**
+     * A basic feature test example.
+     *
+     * @return void
+     */
+    public function test_can_destroy_record()
     {
         $locker = factory(Locker::class)->create();
 
-        $this->json('GET', route('lockers.show', $locker->id))
+        $this->json('DELETE', route('lockers.destroy', $locker->id))
             ->assertStatus(200)
             ->assertExactJson([
-                'data' => [
-                    'id' => $locker->id,
-                    'guid' => $locker->guid,
-                ],
-            ]);
+                'message' => 'OK.',
+            ])
+        ;
     }
 }
