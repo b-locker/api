@@ -20,3 +20,17 @@ Route::post('/roles', 'RoleController@store')->name('roles.store');
 Route::get('/roles/{id}', 'RoleController@show')->name('roles.show');
 Route::put('/roles/{id}', 'RoleController@update')->name('roles.update');
 Route::delete('/roles/{id}', 'RoleController@destroy')->name('roles.destroy');
+
+// Client.
+Route::get('/clients', 'ClientController@index')->name('clients.index');
+Route::post('/clients', 'ClientController@store')->name('clients.store');
+Route::get('/clients/{id}', 'ClientController@show')->name('clients.show');
+Route::put('/clients/{id}', 'ClientController@update')->name('clients.update');
+Route::delete('/clients/{id}', 'ClientController@destroy')->name('clients.destroy');
+
+// Client notes.
+Route::get('/clientnotes', 'ClientNotesController@index')->name('clientnotes.index');
+Route::post('/clientnotes', 'ClientNotesController@store')->name('clientnotes.store');
+Route::get('/clientnotes/{id}', 'ClientNotesController@show')->name('clientnotes.show');
+Route::put('/clientnotes/{id}', 'ClientNotesController@update')->name('clientnotes.update');
+Route::delete('/clientnotes/{id}', 'ClientNotesController@destroy')->name('clientnotes.destroy');
