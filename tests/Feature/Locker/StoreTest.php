@@ -17,7 +17,7 @@ class StoreTest extends TestCase
     {
         $data = json_encode(array('guid' => 'testguid'));
 
-        $this->json('POST', route('lockers.store', json_encode(['guid' => 'testguid'])))
+        $this->json('POST', route('lockers.store', ['guid' => 'testguid']))
             ->assertStatus(201)
             ->assertExactJson([
                 'data' => [
