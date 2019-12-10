@@ -13,3 +13,10 @@ Route::post('/managers', 'ManagerController@store')->name('managers.store');
 Route::get('/managers/{id}', 'ManagerController@show')->name('managers.show');
 Route::put('/managers/{id}', 'ManagerController@update')->name('managers.update');
 Route::delete('/managers/{id}', 'ManagerController@destroy')->name('managers.destroy');
+
+// Role.
+Route::get('/roles', 'RoleController@index')->name('roles.index');
+Route::post('/roles', 'RoleController@store')->name('roles.store');
+Route::get('/roles/{id}', 'RoleController@show')->name('roles.show');
+Route::put('/roles/{id}', 'RoleController@update')->name('roles.update');
+Route::delete('/roles/{id}', 'RoleController@destroy')->name('roles.destroy');
