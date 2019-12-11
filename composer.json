@@ -58,7 +58,7 @@
             "@php artisan key:generate --ansi"
         ],
         "tests": [
-            "clear; ./vendor/phpunit/phpunit/phpunit"
+            "php ./vendor/phpunit/phpunit/phpunit"
         ]
     }
 }
