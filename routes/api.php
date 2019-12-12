@@ -1,7 +1,7 @@
 <?php
 
 // Locker.
-Route::get('/lockers', 'LockerController@index')->name('lockers.index');
+// Route::get('/lockers', 'LockerController@index')->name('lockers.index');
 Route::post('/lockers', 'LockerController@store')->name('lockers.store');
 Route::get('/lockers/{id}', 'LockerController@show')->name('lockers.show');
 Route::put('/lockers/{id}', 'LockerController@update')->name('lockers.update');
@@ -13,6 +13,13 @@ Route::post('/managers', 'ManagerController@store')->name('managers.store');
 Route::get('/managers/{id}', 'ManagerController@show')->name('managers.show');
 Route::put('/managers/{id}', 'ManagerController@update')->name('managers.update');
 Route::delete('/managers/{id}', 'ManagerController@destroy')->name('managers.destroy');
+
+Route::post('/managers/register', 'ManagerController@register')->name('managers.register');
+Route::post('/managers/login', 'ManagerController@login')->name('managers.login');
+
+Route::group(['middleware' => ['jwt.verify']], function() {
+    Route::get('/lockers', 'LockerController@index')->name('lockers.index');
+});
 
 // Role.
 Route::get('/roles', 'RoleController@index')->name('roles.index');
