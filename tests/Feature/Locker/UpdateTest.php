@@ -18,13 +18,19 @@ class UpdateTest extends TestCase
     {
         $locker = factory(Locker::class)->create();
 
-        $this->json('PUT', route('lockers.update', $locker->id))
+        $payload = [
+            'id' => $locker->id,
+            'guid' => 'new-guid-test',
+        ];
+
+        $this->json('PUT', route('lockers.update', $payload))
             ->assertStatus(200)
             ->assertExactJson([
                 'data' => [
                     'id' => $locker->id,
-                    'guid' => $locker->guid,
+                    'guid' => 'new-guid-test',
                 ],
-            ]);
+            ])
+        ;
     }
 }
