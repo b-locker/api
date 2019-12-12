@@ -22,6 +22,7 @@ class ShowTest extends TestCase
                     'id' => $locker->id,
                     'guid' => $locker->guid,
                 ],
-            ]);
+            ])
+        ;
     }
 }
