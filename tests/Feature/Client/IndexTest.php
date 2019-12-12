@@ -11,11 +11,6 @@ class IndexTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
     public function test_can_get_collection()
     {
         $clients = factory(Client::class, 3)->create();

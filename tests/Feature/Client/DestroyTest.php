@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\Feature\Locker;
+namespace Tests\Feature\Client;
 
 use Tests\TestCase;
-use App\Models\Locker;
+use App\Models\Client;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -11,13 +11,12 @@ class DestroyTest extends TestCase
 {
     public function test_can_destroy_record()
     {
-        $locker = factory(Locker::class)->create();
+        $client = factory(Client::class)->create();
 
-        $this->json('DELETE', route('lockers.destroy', $locker->id))
+        $this->json('DELETE', route('clients.destroy', $client->id))
             ->assertStatus(200)
             ->assertExactJson([
-                'message' => 'OK.',
-            ])
-        ;
+                'message' => 'OK.'
+            ]);
     }
 }
