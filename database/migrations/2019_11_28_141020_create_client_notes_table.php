@@ -35,7 +35,7 @@ class CreateClientNotesTable extends Migration
     public function down()
     {
         Schema::table('client_notes', function (Blueprint $table) {
-            $table->dropForeign(['client_id']); // Drops index 'geo_state_index'
+            $table->dropForeign(['client_id']);
         });
 
         Schema::dropIfExists('client_notes');
