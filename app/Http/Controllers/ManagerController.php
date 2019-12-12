@@ -4,12 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Manager;
 use Illuminate\Http\Request;
-use App\Http\Resources\ManagerResource;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 // Auth testing.
 use Illuminate\Support\Facades\Hash;
+use App\Http\Resources\ManagerResource;
 use Illuminate\Support\Facades\Validator;
-use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
 class ManagerController extends Controller
