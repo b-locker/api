@@ -12,7 +12,7 @@ class Manager extends Authenticatable implements JWTSubject
         'first_name',
         'last_name',
         'email',
-        'password_hash',
+        'password',
         'role_id',
     ];
 

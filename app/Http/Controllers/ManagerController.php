@@ -9,7 +9,7 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 // Auth testing.
 use Illuminate\Support\Facades\Hash;
 use App\Http\Resources\ManagerResource;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
 class ManagerController extends Controller
@@ -21,7 +21,7 @@ class ManagerController extends Controller
             'first_name',
             'last_name',
             'email',
-            'password_hash',
+            'password',
             'role_id'
         ));
 
@@ -36,39 +36,17 @@ class ManagerController extends Controller
 
         try {
             if (! $token = JWTAuth::attempt($credentials)) {
+                dump($credentials);
+                dump(JWTAuth::attempt($credentials));
+                die;
                 return response()->json(['error' => 'invalid_credentials'], 400);
             }
         } catch (JWTException $e) {
             return response()->json(['error' => 'could_not_create_token'], 500);
         }
-
         return response()->json(compact('token'));
     }
 
-    public function getAuthenticatedUser()
-    {
-        try
-        {
-            if (! $user = JWTAuth::parseToken()->authenticate()) {
-                    return response()->json(['user_not_found'], 404);
-            }
-
-        } catch (Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
-
-            return response()->json(['token_expired'], $e->getStatusCode());
-
-        } catch (Tymon\JWTAuth\Exceptions\TokenInvalidException $e) {
-
-            return response()->json(['token_invalid'], $e->getStatusCode());
-
-        } catch (Tymon\JWTAuth\Exceptions\JWTException $e) {
-
-            return response()->json(['token_absent'], $e->getStatusCode());
-
-        }
-
-        return response()->json(compact('user'));
-    }
     /**
      * Display a listing of the resource.
      *
@@ -93,7 +71,7 @@ class ManagerController extends Controller
             'first_name',
             'last_name',
             'email',
-            'password_hash',
+            'password',
             'role_id'
         ));
         return new ManagerResource($manager);
@@ -125,7 +103,7 @@ class ManagerController extends Controller
             'first_name',
             'last_name',
             'email',
-            'password_hash',
+            'password',
             'role_id'
         ));
         return new ManagerResource($manager);

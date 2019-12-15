@@ -19,7 +19,7 @@ class ManagerResource extends JsonResource
             'first_name' =>     $this->first_name,
             'last_name' =>      $this->last_name,
             'email' =>          $this->email,
-            'password_hash' =>  $this->password_hash,
+            'password' =>  $this->password,
             'role_id' =>        $this->role_id,
         ];
     }
