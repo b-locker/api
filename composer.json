@@ -61,6 +61,12 @@
         ],
         "tests": [
             "clear; ./vendor/phpunit/phpunit/phpunit"
+        ],
+        "cs-fixer": [
+            "@php ./vendor/bin/php-cs-fixer"
+        ],
+        "cs-fixer-check": [
+            "@php ./vendor/bin/php-cs-fixer fix --dry-run -v"
         ]
     }
 }
