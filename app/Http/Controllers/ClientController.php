@@ -27,10 +27,10 @@ class ClientController extends Controller
      */
     public function store(Request $request)
     {
-        $json = json_decode(($request->getContent()));
         $client = Client::create($request->only(
             'email'
         ));
+
         return new ClientResource($client);
     }
 
@@ -59,6 +59,7 @@ class ClientController extends Controller
         $client->update($request->only(
             'email'
         ));
+
         return new ClientResource($client);
     }
 
@@ -72,8 +73,9 @@ class ClientController extends Controller
     {
         $client = Client::findOrFail($id);
         $client->delete();
+
         return response()->json([
-            'message' => 'OK.'
+            'message' => 'OK.',
         ]);
     }
 }

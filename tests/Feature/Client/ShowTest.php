@@ -11,7 +11,7 @@ class ShowTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_can_get_1_model()
+    public function test_can_get_1_record()
     {
         $client = factory(Client::class)->create();
 
@@ -22,6 +22,7 @@ class ShowTest extends TestCase
                     'id' => $client->id,
                     'email' => $client->email,
                 ],
-            ]);
+            ])
+        ;
     }
 }
