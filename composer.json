@@ -61,7 +61,7 @@
             "@php artisan key:generate --ansi"
         ],
         "tests": [
-            "clear; ./vendor/phpunit/phpunit/phpunit"
+            "@php ./vendor/phpunit/phpunit/phpunit"
         ],
         "cs-fixer": [
             "@php ./vendor/bin/php-cs-fixer"

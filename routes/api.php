@@ -29,8 +29,8 @@ Route::put('/clients/{id}', 'ClientController@update')->name('clients.update');
 Route::delete('/clients/{id}', 'ClientController@destroy')->name('clients.destroy');
 
 // Client notes.
-Route::get('/clientnotes', 'ClientNotesController@index')->name('clientnotes.index');
-Route::post('/clientnotes', 'ClientNotesController@store')->name('clientnotes.store');
-Route::get('/clientnotes/{id}', 'ClientNotesController@show')->name('clientnotes.show');
-Route::put('/clientnotes/{id}', 'ClientNotesController@update')->name('clientnotes.update');
-Route::delete('/clientnotes/{id}', 'ClientNotesController@destroy')->name('clientnotes.destroy');
+Route::get('/clients/{clientId}/notes', 'ClientNotesController@index')->name('clients.notes.index');
+Route::post('/clients/{clientId}/notes', 'ClientNotesController@store')->name('clients.notes.store');
+Route::get('/clients/{clientId}/notes/{id}', 'ClientNotesController@show')->name('clients.notes.show');
+Route::put('/clients/{clientId}/notes/{id}', 'ClientNotesController@update')->name('clients.notes.update');
+Route::delete('/clients/{clientId}/notes/{id}', 'ClientNotesController@destroy')->name('clients.notes.destroy');
