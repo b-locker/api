@@ -25,10 +25,9 @@ class LockerController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store()
     {
-        $json = json_decode(($request->getContent()));
-        $locker = Locker::create($request->only('guid'));
+        $locker = Locker::create(['guid' => substr(md5(rand()), 0, 8)]);
         return new LockerResource($locker);
     }
 
