@@ -30,4 +30,44 @@ class UpdateTest extends TestCase
             ])
         ;
     }
+
+    public function test_validates_email_type()
+    {
+        $payload = [
+            'email' => 'INVALID_EMAIL_ADDRESS',
+        ];
+
+        $this->json('POST', route('clients.store', $payload))
+            ->assertStatus(422)
+            ->assertExactJson([
+                'message' => 'The given data was invalid.',
+                'errors' => [
+                    'email' => [
+                        'The email must be a valid email address.',
+                    ],
+                ],
+            ])
+        ;
+    }
+
+    public function test_validates_email_length_too_long()
+    {
+        $maxLength = 254;
+
+        $payload = [
+            'email' => str_repeat('a', $maxLength - strlen('_long@email.com') + 1) . '_long@email.com',
+        ];
+
+        $this->json('POST', route('clients.store', $payload))
+            ->assertStatus(422)
+            ->assertExactJson([
+                'message' => 'The given data was invalid.',
+                'errors' => [
+                    'email' => [
+                        'The email may not be greater than ' . $maxLength . ' characters.',
+                    ],
+                ],
+            ])
+        ;
+    }
 }
