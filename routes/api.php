@@ -7,6 +7,8 @@ Route::get('/lockers/{id}', 'LockerController@show')->name('lockers.show');
 Route::put('/lockers/{id}', 'LockerController@update')->name('lockers.update');
 Route::delete('/lockers/{id}', 'LockerController@destroy')->name('lockers.destroy');
 
+Route::get('/lockers/check/{id}', 'LockerController@check')->name('lockers.check');
+
 // Manager.
 Route::get('/managers', 'ManagerController@index')->name('managers.index');
 Route::post('/managers', 'ManagerController@store')->name('managers.store');
@@ -34,3 +36,10 @@ Route::post('/clients/{clientId}/notes', 'ClientNotesController@store')->name('c
 Route::get('/clients/{clientId}/notes/{id}', 'ClientNotesController@show')->name('clients.notes.show');
 Route::put('/clients/{clientId}/notes/{id}', 'ClientNotesController@update')->name('clients.notes.update');
 Route::delete('/clients/{clientId}/notes/{id}', 'ClientNotesController@destroy')->name('clients.notes.destroy');
+
+// Client has lockers.
+Route::get('/clientlockers', 'ClientHasLockerController@index')->name('clients.lockers.index');
+Route::post('/clientlockers', 'ClientHasLockerController@store')->name('clients.lockers.store');
+Route::get('/clientlockers/{id}', 'ClientHasLockerController@show')->name('clients.lockers.show');
+Route::put('/clientlockers/{id}', 'ClientHasLockerController@update')->name('clients.lockers.update');
+Route::delete('/clientlockers/{id}', 'ClientHasLockerController@destroy')->name('clients.lockers.destroy');
