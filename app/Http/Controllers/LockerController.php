@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Locker;
 use App\Models\ClientHasLocker;
+use App\Models\Client;
+
 use Illuminate\Http\Request;
 use App\Http\Resources\LockerResource;
 
@@ -77,40 +79,38 @@ class LockerController extends Controller
     // All special calls.
     public function check($guid)
     {
-        $user = Locker::where('guid', '=', $guid)->first();
-        if ($user !== null)
-        {
-            if(!ClientHasLocker::where('locker_id', '=', $user->id)->exists())
+        $locker = Locker::where('guid', '=', $guid)->first();
+        if ($locker !== null){
+            if(!ClientHasLocker::where('locker_id', '=', $locker->id)->exists())
             {
                 return response("Exists and claimable.", 200);
+                // Show register page after this.
             }
             else
             {
                 return response("Already claimed.", 409);
+                // Show login page after this.
             }
         }
         else
         {
             return response("Doesn't exist", 404);
+            // Show unavailable page after this.
         }
-        //return new LockerResource($locker);
-
-        // Important call
-        // Implement;
-        // Check if locker exists, if not, return 404
-        // Check if locker is claimed by searching the client_has_lockers table for the ID,
-        // if it doesnt exist, return claimable, if it does exist, check if current date doesnt fall
-        // in rent period. Only then will it return a positive flag
 
     }
 
-    public function claim($email)
+    public function claim(Request $request)
     {
+        $client = Client::create($request->only('email'));
+        return new ClientResource($client);
 
+        // Create a client, generate a hash, create a clienthaslocker with no key
     }
 
-    public function setKey($key)
+    public function set($guid, $key, $hash)
     {
-
+        // Set client validation to true,
+        // Check hash validity and then remove the hash
     }
 }
