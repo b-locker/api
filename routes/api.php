@@ -1,13 +1,16 @@
 <?php
 
+// Special routes.
+Route::get('/lockers/check/{guid}', 'LockerController@check')->name('lockers.check');
+Route::post('/lockers/claim/', 'LockerController@claim')->name('lockers.claim');
+Route::post('/lockers/set/{guid}', 'LockerController@set')->name('lockers.set');
+
 // Locker.
 Route::get('/lockers', 'LockerController@index')->name('lockers.index');
 Route::post('/lockers', 'LockerController@store')->name('lockers.store');
 Route::get('/lockers/{id}', 'LockerController@show')->name('lockers.show');
 Route::put('/lockers/{id}', 'LockerController@update')->name('lockers.update');
 Route::delete('/lockers/{id}', 'LockerController@destroy')->name('lockers.destroy');
-
-Route::get('/lockers/check/{id}', 'LockerController@check')->name('lockers.check');
 
 // Manager.
 Route::get('/managers', 'ManagerController@index')->name('managers.index');
@@ -31,11 +34,11 @@ Route::put('/clients/{id}', 'ClientController@update')->name('clients.update');
 Route::delete('/clients/{id}', 'ClientController@destroy')->name('clients.destroy');
 
 // Client notes.
-Route::get('/clients/{clientId}/notes', 'ClientNotesController@index')->name('clients.notes.index');
-Route::post('/clients/{clientId}/notes', 'ClientNotesController@store')->name('clients.notes.store');
-Route::get('/clients/{clientId}/notes/{id}', 'ClientNotesController@show')->name('clients.notes.show');
-Route::put('/clients/{clientId}/notes/{id}', 'ClientNotesController@update')->name('clients.notes.update');
-Route::delete('/clients/{clientId}/notes/{id}', 'ClientNotesController@destroy')->name('clients.notes.destroy');
+Route::get('/clients/{clientId}/notes', 'ClientNoteController@index')->name('clients.notes.index');
+Route::post('/clients/{clientId}/notes', 'ClientNoteController@store')->name('clients.notes.store');
+Route::get('/clients/{clientId}/notes/{id}', 'ClientNoteController@show')->name('clients.notes.show');
+Route::put('/clients/{clientId}/notes/{id}', 'ClientNoteController@update')->name('clients.notes.update');
+Route::delete('/clients/{clientId}/notes/{id}', 'ClientNoteController@destroy')->name('clients.notes.destroy');
 
 // Client has lockers.
 Route::get('/clientlockers', 'ClientHasLockerController@index')->name('clients.lockers.index');
