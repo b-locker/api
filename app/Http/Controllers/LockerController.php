@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Locker;
-use App\Models\ClientHasLocker;
 use App\Models\Client;
-
+use App\Models\Locker;
 use Illuminate\Http\Request;
+
+use App\Models\ClientHasLocker;
+use App\Http\Resources\ClientResource;
 use App\Http\Resources\LockerResource;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class LockerController extends Controller
 {
@@ -79,9 +81,61 @@ class LockerController extends Controller
     // All special calls.
     public function check($guid)
     {
-        $locker = Locker::where('guid', '=', $guid)->first();
-        if ($locker !== null){
-            if(!ClientHasLocker::where('locker_id', '=', $locker->id)->exists())
+        return $this->lockerAvailable($guid);
+    }
+
+    public function claim(Request $request)
+    {
+        $client = Client::where('email', '=', $request->only('email'))->first();
+
+        // Client creation if doesn't exist.
+        if ($client == null) {
+            $client = Client::create($request->only('email'));
+        }
+
+        // Locker available?
+        if ($this->lockerAvailable($request->only('guid')) == response("Exists and claimable.", 200))
+        {
+            $clientHasLocker = ClientHasLocker::create($request->only(
+            'client_id',
+            'locker_id',
+            'claim_hash'
+            ));
+
+            return response(substr(md5(rand()), 0, 8));
+        }
+        else
+        {
+            // Locked claimed, send error code?
+            return response("aii, dit lukt niet");
+        }
+
+
+        // Create a client if they don't exist
+        // generate a hash,
+        // create a clienthaslocker (if it isnt taken yet) with no key
+        // if the locker doesnt get set within 10 minutes, the clienthaslocker gets removed
+        // send an email to the clients email with the hash as unlock
+    }
+
+    public function set($guid, $key, $hash)
+    {
+        // Set client validation to true,
+        // Check hash validity and then remove the hash
+    }
+
+
+
+
+    // Non-route functions.
+    public function lockerAvailable($guid)
+    {
+        try {
+            $locker = Locker::where('guid', '=', $guid)->firstOrFail();
+
+            dd($locker->clientClaims->last());
+
+            if (!ClientHasLocker::where('locker_id', '=', $locker->id)->exists())
             {
                 return response("Exists and claimable.", 200);
                 // Show register page after this.
@@ -91,26 +145,9 @@ class LockerController extends Controller
                 return response("Already claimed.", 409);
                 // Show login page after this.
             }
-        }
-        else
-        {
+        } catch (ModelNotFoundException $e) {
             return response("Doesn't exist", 404);
             // Show unavailable page after this.
         }
-
-    }
-
-    public function claim(Request $request)
-    {
-        $client = Client::create($request->only('email'));
-        return new ClientResource($client);
-
-        // Create a client, generate a hash, create a clienthaslocker with no key
-    }
-
-    public function set($guid, $key, $hash)
-    {
-        // Set client validation to true,
-        // Check hash validity and then remove the hash
     }
 }

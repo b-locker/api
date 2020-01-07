@@ -9,5 +9,9 @@ class Locker extends Model
     protected $fillable = [
         'guid',
     ];
-}
 
+    public function clientClaims()
+    {
+        return $this->hasMany(ClientHasLocker::class);
+    }
+}

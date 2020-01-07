@@ -2,8 +2,8 @@
 
 // Special routes.
 Route::get('/lockers/check/{guid}', 'LockerController@check')->name('lockers.check');
-Route::post('/lockers/claim/', 'LockerController@claim')->name('lockers.claim');
-Route::post('/lockers/set/{guid}', 'LockerController@set')->name('lockers.set');
+Route::post('/lockers/claim', 'LockerController@claim')->name('lockers.claim');
+Route::post('/lockers/set', 'LockerController@set')->name('lockers.set');
 
 // Locker.
 Route::get('/lockers', 'LockerController@index')->name('lockers.index');
