@@ -16,8 +16,11 @@ class CreateClientHasLockersTable extends Migration
         Schema::create('client_has_lockers', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('client_id')->unsigned();
-            $table->bigInteger('locker_id')->unsigned()->unique();
-            $table->string('key_hash');
+            $table->bigInteger('locker_id')->unsigned();
+            $table->string('setup_token')->nullable();
+            $table->string('key_hash')->nullable();
+            $table->timestamp('taken_at')->useCurrent();
+            $table->timestamp('invalid_at')->nullable();
             $table->timestamps();
 
             $table->foreign('client_id')
