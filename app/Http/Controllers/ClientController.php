@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Client;
-use Illuminate\Http\Request;
-use App\Http\Resources\ManagerResource;
+use App\Http\Resources\ClientResource;
+use App\Http\Requests\ClientStoreRequest;
 
 class ClientController extends Controller
 {
@@ -16,7 +16,7 @@ class ClientController extends Controller
     public function index()
     {
         $clients = Client::all();
-        return ManagerResource::collection($clients);
+        return ClientResource::collection($clients);
     }
 
     /**
@@ -25,13 +25,13 @@ class ClientController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ClientStoreRequest $request)
     {
-        $json = json_decode(($request->getContent()));
         $client = Client::create($request->only(
             'email'
         ));
-        return new ManagerResource($client);
+
+        return new ClientResource($client);
     }
 
     /**
@@ -43,7 +43,7 @@ class ClientController extends Controller
     public function show($id)
     {
         $client = Client::findOrFail($id);
-        return new ManagerResource($client);
+        return new ClientResource($client);
     }
 
     /**
@@ -53,13 +53,14 @@ class ClientController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ClientStoreRequest $request, $id)
     {
         $client = Client::findOrFail($id);
         $client->update($request->only(
             'email'
         ));
-        return new ManagerResource($client);
+
+        return new ClientResource($client);
     }
 
     /**
@@ -72,8 +73,9 @@ class ClientController extends Controller
     {
         $client = Client::findOrFail($id);
         $client->delete();
+
         return response()->json([
-            'message' => 'OK.'
+            'message' => 'OK.',
         ]);
     }
 }

@@ -19,6 +19,11 @@ class CreateClientNotesTable extends Migration
             $table->string('note');
             $table->timestamps();
             $table->string('created_by');
+
+            $table->foreign('client_id')
+                ->references('id')
+                ->on('clients')
+            ;
         });
     }
 
@@ -29,6 +34,10 @@ class CreateClientNotesTable extends Migration
      */
     public function down()
     {
+        Schema::table('client_notes', function (Blueprint $table) {
+            $table->dropForeign(['client_id']);
+        });
+
         Schema::dropIfExists('client_notes');
     }
 }
