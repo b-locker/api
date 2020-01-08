@@ -40,7 +40,11 @@ class ManagerController extends Controller
         {
             return response()->json(['error' => 'Could not create token.'], 500);
         }
-        return response()->json([$token]);
+        return response()->json([
+            'data' => [
+                'token' => $token,
+            ],
+        ]);
     }
 
     /**
