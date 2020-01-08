@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Client;
 use Illuminate\Http\Request;
-use App\Http\Resources\ManagerResource;
+use App\Http\Resources\ClientResource;
 
 class ClientController extends Controller
 {
@@ -16,7 +16,7 @@ class ClientController extends Controller
     public function index()
     {
         $clients = Client::all();
-        return ManagerResource::collection($clients);
+        return ClientResource::collection($clients);
     }
 
     /**
@@ -27,11 +27,11 @@ class ClientController extends Controller
      */
     public function store(Request $request)
     {
-        $json = json_decode(($request->getContent()));
         $client = Client::create($request->only(
             'email'
         ));
-        return new ManagerResource($client);
+
+        return new ClientResource($client);
     }
 
     /**
@@ -43,7 +43,7 @@ class ClientController extends Controller
     public function show($id)
     {
         $client = Client::findOrFail($id);
-        return new ManagerResource($client);
+        return new ClientResource($client);
     }
 
     /**
@@ -59,7 +59,8 @@ class ClientController extends Controller
         $client->update($request->only(
             'email'
         ));
-        return new ManagerResource($client);
+
+        return new ClientResource($client);
     }
 
     /**
@@ -72,8 +73,9 @@ class ClientController extends Controller
     {
         $client = Client::findOrFail($id);
         $client->delete();
+
         return response()->json([
-            'message' => 'OK.'
+            'message' => 'OK.',
         ]);
     }
 }

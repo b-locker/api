@@ -1,0 +1,3 @@
+{
+    "tighten-lint.exec": "vendor/bin/tlint"
+}

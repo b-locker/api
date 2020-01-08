@@ -11,4 +11,9 @@ class ClientNote extends Model
         'note',
         'created_by',
     ];
+
+    public function client()
+    {
+        return $this->hasOne(Client::class);
+    }
 }
