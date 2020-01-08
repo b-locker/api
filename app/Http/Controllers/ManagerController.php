@@ -5,15 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Manager;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
-
-use Illuminate\Support\Facades\Hash;
 use App\Http\Resources\ManagerResource;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\ManagerLoginRequest;
 use Tymon\JWTAuth\Exceptions\JWTException;
+use App\Http\Requests\ManagerStoreRequest;
 
 class ManagerController extends Controller
 {
-    public function register(Request $request)
+    public function register(ManagerStoreRequest $request)
     {
         $manager = Manager::create($request->only([
             'first_name',
@@ -32,7 +31,7 @@ class ManagerController extends Controller
         ], 201);
     }
 
-    public function login(Request $request)
+    public function login(ManagerLoginRequest $request)
     {
         $credentials = $request->only('email', 'password');
 
@@ -69,7 +68,7 @@ class ManagerController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ManagerStoreRequest $request)
     {
         $manager = Manager::create($request->only([
             'first_name',
@@ -99,7 +98,7 @@ class ManagerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ManagerStoreRequest $request, $id)
     {
         $manager = Manager::findOrFail($id);
         $manager->update($request->only(
