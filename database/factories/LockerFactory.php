@@ -7,6 +7,6 @@ use Faker\Generator as Faker;
 
 $factory->define(Locker::class, function (Faker $faker) {
     return [
-        'guid' => substr(md5(rand()), 0, 8),
+        'guid' => Str::random(8),
     ];
 });

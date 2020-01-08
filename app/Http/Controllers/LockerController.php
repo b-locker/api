@@ -27,7 +27,7 @@ class LockerController extends Controller
      */
     public function store()
     {
-        $locker = Locker::create(['guid' => substr(md5(rand()), 0, 8)]);
+        $locker = Locker::create(['guid' => Str::random(8)]);
         return new LockerResource($locker);
     }
 

@@ -18,15 +18,19 @@
          */
         public function handle($request, Closure $next)
         {
-            try {
+            try
+            {
                 $user = JWTAuth::parseToken()->authenticate();
-            } catch (Exception $e) {
+            }
+
+            catch (Exception $e)
+            {
                 if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenInvalidException) {
-                    return response()->json(['message' => 'Token is invalid']);
+                    return response()->json(['message' => 'Token is invalid.'], 401);
                 } else if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenExpiredException) {
-                    return response()->json(['message' => 'Token is expired']);
+                    return response()->json(['message' => 'Token is expired.'], 401);
                 } else {
-                    return response()->json(['message' => 'Authorization token not found']);
+                    return response()->json(['message' => 'Authorization token not found.'], 400);
                 }
             }
 

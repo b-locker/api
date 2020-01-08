@@ -19,7 +19,6 @@ class CreateManagerTable extends Migration
             $table->string('last_name', 50);
             $table->string('email')->unique();
             $table->string('password');
-            $table->bigInteger('role_id');
             $table->timestamps();
         });
     }
