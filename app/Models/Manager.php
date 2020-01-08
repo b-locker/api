@@ -19,7 +19,6 @@ class Manager extends Authenticatable implements JWTSubject
 
     protected $hidden = [
         'password',
-        'remember_token',
     ];
 
     public function getJWTIdentifier()
