@@ -18,13 +18,9 @@
          */
         public function handle($request, Closure $next)
         {
-            try
-            {
-                $user = JWTAuth::parseToken()->authenticate();
-            }
-
-            catch (Exception $e)
-            {
+            try {
+                JWTAuth::parseToken()->authenticate();
+            } catch (Exception $e) {
                 if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenInvalidException) {
                     return response()->json(['message' => 'Token is invalid.'], 401);
                 } else if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenExpiredException) {
