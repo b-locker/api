@@ -15,16 +15,21 @@ class ManagerController extends Controller
 {
     public function register(Request $request)
     {
-        $manager = Manager::create($request->only(
+        $manager = Manager::create($request->only([
             'first_name',
             'last_name',
             'email',
-            'password'
-        ));
+            'password',
+        ]));
 
         $token = JWTAuth::fromUser($manager);
 
-        return response()->json(compact('manager','token'),201);
+        return response()->json([
+            'data' => [
+                'manager' => $manager,
+                'token' => $token,
+            ],
+        ], 201);
     }
 
     public function login(Request $request)
@@ -32,14 +37,14 @@ class ManagerController extends Controller
         $credentials = $request->only('email', 'password');
 
         try {
-            if (! $token = JWTAuth::attempt($credentials))
+            if (!$token = JWTAuth::attempt($credentials))
             {
                 return response()->json(['error' => 'Invalid credentials.'], 400);
             }
-        } catch (JWTException $e)
-        {
+        } catch (JWTException $e) {
             return response()->json(['error' => 'Could not create token.'], 500);
         }
+
         return response()->json([
             'data' => [
                 'token' => $token,
@@ -66,12 +71,12 @@ class ManagerController extends Controller
      */
     public function store(Request $request)
     {
-        $manager = Manager::create($request->only(
+        $manager = Manager::create($request->only([
             'first_name',
             'last_name',
             'email',
-            'password'
-        ));
+            'password',
+        ]));
         return new ManagerResource($manager);
     }
 
