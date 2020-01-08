@@ -15,8 +15,8 @@ class ClientNoteController extends Controller
      */
     public function index()
     {
-        $clientnotes = ClientNote::all();
-        return ManagerResource::collection($clientnotes);
+        $clientNotes = ClientNote::all();
+        return ManagerResource::collection($clientNotes);
     }
 
     /**
@@ -27,13 +27,13 @@ class ClientNoteController extends Controller
      */
     public function store(Request $request)
     {
-        $json = json_decode(($request->getContent()));
-        $clientnote = ClientNote::create($request->only(
-            'client_id',
+        $clientNote = ClientNote::create($request->only(
+            'client_idd',
             'note',
             'created_by'
         ));
-        return new ManagerResource($clientnote);
+
+        return new ManagerResource($clientNote);
     }
 
     /**
@@ -44,8 +44,8 @@ class ClientNoteController extends Controller
      */
     public function show($id)
     {
-        $clientnote = ClientNote::findOrFail($id);
-        return new ManagerResource($clientnote);
+        $clientNote = ClientNote::findOrFail($id);
+        return new ManagerResource($clientNote);
     }
 
     /**
@@ -57,13 +57,14 @@ class ClientNoteController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $clientnote = ClientNote::findOrFail($id);
-        $clientnote->update($request->only(
+        $clientNote = ClientNote::findOrFail($id);
+        $clientNote->update($request->only(
             'client_id',
             'note',
             'created_by'
         ));
-        return new ManagerResource($clientnote);
+
+        return new ManagerResource($clientNote);
     }
 
     /**
@@ -74,8 +75,9 @@ class ClientNoteController extends Controller
      */
     public function destroy($id)
     {
-        $clientnote = ClientNote::findOrFail($id);
-        $clientnote->delete();
+        $clientNote = ClientNote::findOrFail($id);
+        $clientNote->delete();
+
         return response()->json([
             'message' => 'OK.',
         ]);
