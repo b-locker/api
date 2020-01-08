@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Locker;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Resources\LockerResource;
 
