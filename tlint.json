@@ -1,7 +1,8 @@
 {
     "preset": "laravel",
     "disabled": [
-        "NoInlineVarDocs"
+        "NoInlineVarDocs",
+        "NoLeadingSlashesOnRoutePaths"
     ],
     "excluded": [
         "tests/"
