@@ -1,10 +1,5 @@
 <?php
 
-// Special routes.
-Route::get('/lockers/check/{guid}', 'LockerController@check')->name('lockers.check');
-Route::post('/lockers/claim', 'LockerController@claim')->name('lockers.claim');
-Route::post('/lockers/set', 'LockerController@set')->name('lockers.set');
-
 // Locker.
 Route::get('/lockers', 'LockerController@index')->name('lockers.index');
 Route::post('/lockers', 'LockerController@store')->name('lockers.store');
@@ -40,9 +35,9 @@ Route::get('/clients/{clientId}/notes/{id}', 'ClientNoteController@show')->name(
 Route::put('/clients/{clientId}/notes/{id}', 'ClientNoteController@update')->name('clients.notes.update');
 Route::delete('/clients/{clientId}/notes/{id}', 'ClientNoteController@destroy')->name('clients.notes.destroy');
 
-// Client has lockers.
-Route::get('/clientlockers', 'ClientHasLockerController@index')->name('clients.lockers.index');
-Route::post('/clientlockers', 'ClientHasLockerController@store')->name('clients.lockers.store');
-Route::get('/clientlockers/{id}', 'ClientHasLockerController@show')->name('clients.lockers.show');
-Route::put('/clientlockers/{id}', 'ClientHasLockerController@update')->name('clients.lockers.update');
-Route::delete('/clientlockers/{id}', 'ClientHasLockerController@destroy')->name('clients.lockers.destroy');
+// Client locker claims.
+Route::get('/clients/{clientId}/lockers', 'ClientHasLockerController@index')->name('clients.lockers.index');
+Route::post('/clients/{clientId}/lockers', 'ClientHasLockerController@store')->name('clients.lockers.store');
+Route::get('/clients/{clientId}/lockers/{lockerGuid}', 'ClientHasLockerController@show')->name('clients.lockers.show');
+Route::put('/clients/{clientId}/lockers/{lockerGuid}', 'ClientHasLockerController@update')->name('clients.lockers.update');
+Route::delete('/clients/{clientId}/lockers/{lockerGuid}', 'ClientHasLockerController@destroy')->name('clients.lockers.destroy');

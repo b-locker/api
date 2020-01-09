@@ -27,11 +27,33 @@ class ClientHasLockerController extends Controller
      */
     public function store(Request $request)
     {
-        $clientHasLocker = ClientHasLocker::create($request->only(
+        $lockerGuid = $request->only('guid');
+        $locker = Locker::where('guid', $lockerGuid)->findOrFail();
+
+        $email = $request->only('email');
+        $client = Client::where('email', $email)->firstOrCreate();
+
+        if (!$this->isLockerPresent()) {
+            return response()->json([
+                'message' => 'Locker is not present.',
+            ], 404);
+        }
+
+        if ($this->isLockerClaimed($locker)) {
+            return response()->json([
+                'message' => 'Locker is already claimed.',
+            ], 400);
+        }
+
+        $client->lockerClaims()->create($request->only([
             'client_id',
             'locker_id',
-            'key_hash'
-        ));
+            'claim_hash',
+        ]));
+
+        return response()->json([
+            'message' => 'OK.',
+        ]);
 
         return new ClientHasLockerResource($clientHasLocker);
     }
