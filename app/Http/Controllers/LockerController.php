@@ -2,14 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Client;
 use App\Models\Locker;
 use Illuminate\Http\Request;
-
-use App\Models\ClientHasLocker;
-use App\Http\Resources\ClientResource;
 use App\Http\Resources\LockerResource;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class LockerController extends Controller
 {
@@ -32,7 +27,6 @@ class LockerController extends Controller
      */
     public function store(Request $request)
     {
-        $json = json_decode(($request->getContent()));
         $locker = Locker::create($request->only('guid'));
         return new LockerResource($locker);
     }
