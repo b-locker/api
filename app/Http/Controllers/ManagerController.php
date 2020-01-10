@@ -9,6 +9,8 @@ use App\Http\Resources\ManagerResource;
 use App\Http\Requests\ManagerLoginRequest;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use App\Http\Requests\ManagerStoreRequest;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\TestMail;
 
 class ManagerController extends Controller
 {
@@ -22,6 +24,9 @@ class ManagerController extends Controller
         ]));
 
         $token = JWTAuth::fromUser($manager);
+
+        $name = 'Bram';
+        Mail::to('bram.mathijssen@gmail.com')->send(new TestMail($name));
 
         return response()->json([
             'data' => [
