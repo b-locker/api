@@ -20,6 +20,7 @@ class TestMail extends Mailable
     public function __construct($name)
     {
         $this->name = $name;
+        $this->subject ='Claim locker';
     }
 
     /**

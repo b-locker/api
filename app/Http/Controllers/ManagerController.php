@@ -26,7 +26,7 @@ class ManagerController extends Controller
         $token = JWTAuth::fromUser($manager);
 
         $name = 'Bram';
-        Mail::to('bram.mathijssen@gmail.com')->send(new TestMail($name));
+        Mail::to('walker.bram@gmail.com')->send(new TestMail($name));
 
         return response()->json([
             'data' => [
