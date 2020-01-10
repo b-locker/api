@@ -27,4 +27,5 @@ _The official B-Locker API Server._
 1. Run `composer install`
 1. `cp .env.example .env`
 1. `php artisan key:generate`
+1. `php artisan jwt:secret`
 1. _Do not forget to change database config in `.env`_
