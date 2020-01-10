@@ -2,42 +2,51 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ClientHasLocker;
+use Carbon\Carbon;
+use App\Models\Client;
+use App\Models\Locker;
 use Illuminate\Http\Request;
+use App\Models\ClientHasLocker;
+use App\Http\Requests\LockerClaimStoreRequest;
 use App\Http\Resources\ClientHasLockerResource;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ClientHasLockerController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
+     * @param  int  $clientId
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(int $clientId)
     {
-        $clientHasLockers = ClientHasLocker::all();
-        return ClientHasLockerResource::collection($clientHasLockers);
+        $client = Client::findOrFail($clientId);
+        $lockerClaims = $client->lockerClaims();
+
+        return ClientHasLockerResource::collection($lockerClaims);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $clientId
+     * @param  LockerClaimStoreRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(int $clientId, LockerClaimStoreRequest $request)
     {
-        $lockerGuid = $request->only('guid');
-        $locker = Locker::where('guid', $lockerGuid)->findOrFail();
+        $client = Client::findOrFail($clientId);
 
-        $email = $request->only('email');
-        $client = Client::where('email', $email)->firstOrCreate();
+        $lockerGuid = $request->get('guid');
 
-        if (!$this->isLockerPresent()) {
-            return response()->json([
-                'message' => 'Locker is not present.',
-            ], 404);
-        }
+        // try {
+            $locker = Locker::where('guid', $lockerGuid)->firstOrFail();
+        // } catch (ModelNotFoundException $e) {
+        //     return response()->json([
+        //         'message' => 'Locker is not present.',
+        //     ], 404);
+        // }
 
         if ($this->isLockerClaimed($locker)) {
             return response()->json([
@@ -50,6 +59,11 @@ class ClientHasLockerController extends Controller
             'locker_id',
             'claim_hash',
         ]));
+
+        $client->lockerClaims()->create([
+            'guid' => $request->get('guid'),
+            'invalid_at' => Carbon::now()->addDays(14),
+        ]);
 
         return response()->json([
             'message' => 'OK.',
