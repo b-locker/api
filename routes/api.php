@@ -41,3 +41,8 @@ Route::post('/clients/{clientId}/notes', 'ClientNotesController@store')->name('c
 Route::get('/clients/{clientId}/notes/{id}', 'ClientNotesController@show')->name('clients.notes.show');
 Route::put('/clients/{clientId}/notes/{id}', 'ClientNotesController@update')->name('clients.notes.update');
 Route::delete('/clients/{clientId}/notes/{id}', 'ClientNotesController@destroy')->name('clients.notes.destroy');
+
+Route::post('/mail/claim', 'MailController@claim')->name('mail.claim');
+Route::post('/mail/forgot', 'MailController@forgot')->name('mail.forgot');
+Route::post('/mail/end', 'MailController@end')->name('mail.end');
+Route::post('/mail/lockdown', 'MailController@lockdown')->name('mail.lockdown');
