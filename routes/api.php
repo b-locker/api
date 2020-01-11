@@ -42,6 +42,7 @@ Route::get('/clients/{clientId}/notes/{id}', 'ClientNotesController@show')->name
 Route::put('/clients/{clientId}/notes/{id}', 'ClientNotesController@update')->name('clients.notes.update');
 Route::delete('/clients/{clientId}/notes/{id}', 'ClientNotesController@destroy')->name('clients.notes.destroy');
 
+// Mail examples.
 Route::post('/mail/claim', 'MailController@claim')->name('mail.claim');
 Route::post('/mail/forgot', 'MailController@forgot')->name('mail.forgot');
 Route::post('/mail/end', 'MailController@end')->name('mail.end');

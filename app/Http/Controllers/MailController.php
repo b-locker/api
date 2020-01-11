@@ -10,14 +10,15 @@ class MailController extends Controller
 {
     public function claim(Request $request)
     {
-        // $name = 'Bram';
+        $email = $request->input('email');
         // //Mail::to('walker.bram@gmail.com')->send(new TestMail($name));
 
-        // Mail::send('emails.name', ['name' => $name], function ($message) {
+        Mail::send('emails.name', ['name' => 'Testing', 'email' => $email], function ($message) use($email) {
 
-        //     $message->to('walker.bram@gmail.com');
-        //     $message->subject('NEW Subject!');
-        // });
+            $message->to($email);
+            $message->subject('Claim locker.');
+        });
+
         return 'claim';
     }
 
