@@ -3,7 +3,8 @@
     "disabled": [
         "NoInlineVarDocs",
         "NoLeadingSlashesOnRoutePaths",
-        "SpaceAfterSoleNotOperator"
+        "SpaceAfterSoleNotOperator",
+        "NoParensEmptyInstantiations"
     ],
     "excluded": [
         "tests/"

@@ -10,8 +10,8 @@ class Locker extends Model
         'guid',
     ];
 
-    public function clientClaims()
+    public function claims()
     {
-        return $this->hasMany(ClientHasLocker::class);
+        return $this->hasMany(LockerClaim::class);
     }
 }

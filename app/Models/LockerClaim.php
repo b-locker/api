@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ClientHasLocker extends Model
+class LockerClaim extends Model
 {
     protected $fillable = [
         'client_id',
@@ -12,13 +12,13 @@ class ClientHasLocker extends Model
         'key_hash',
     ];
 
-    public function lockers()
+    public function locker()
     {
-        return $this->hasOne(Locker::class);
+        return $this->belongsTo(Locker::class);
     }
 
     public function client()
     {
-        return $this->hasOne(Client::class);
+        return $this->belongsTo(Client::class);
     }
 }

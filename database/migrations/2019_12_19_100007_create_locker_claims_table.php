@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateClientHasLockersTable extends Migration
+class CreateLockerClaimsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateClientHasLockersTable extends Migration
      */
     public function up()
     {
-        Schema::create('client_has_lockers', function (Blueprint $table) {
+        Schema::create('locker_claims', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('client_id')->unsigned();
             $table->bigInteger('locker_id')->unsigned();
@@ -42,6 +42,6 @@ class CreateClientHasLockersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('client_has_lockers');
+        Schema::dropIfExists('locker_claims');
     }
 }
