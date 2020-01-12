@@ -12,6 +12,7 @@ class Locker extends Model
 
     public function claims()
     {
-        return $this->hasMany(LockerClaim::class);
+        $foreignKey = 'locker_id';
+        return $this->hasMany(LockerClaim::class, $foreignKey);
     }
 }

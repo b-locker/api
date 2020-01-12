@@ -2,25 +2,28 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Client;
 use App\Models\Locker;
 use App\Models\LockerClaim;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Resources\LockerClaimResource;
 use App\Exceptions\NotYetImplementedException;
+use App\Http\Requests\LockerClaimStoreRequest;
 
 class LockerClaimController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @param  int  $clientId
+     * @param  string  $lockerGuid
      * @return \Illuminate\Http\Response
      */
-    public function index(int $clientId)
+    public function index(string $lockerGuid)
     {
-        $client = Client::findOrFail($clientId);
-        $lockerClaims = $client->lockerClaims;
+        $locker = Locker::where('guid', $lockerGuid)->firstOrFail();
+        $lockerClaims = $locker->lockerClaims;
 
         return LockerClaimResource::collection($lockerClaims);
     }
@@ -28,51 +31,58 @@ class LockerClaimController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  int  $clientId
+     * @param  string  $lockerGuid
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(int $clientId, Request $request)
+    public function store(string $lockerGuid, LockerClaimStoreRequest $request)
     {
-        $lockerGuid = $request->get('guid');
-        $locker = Locker::where('guid', $lockerGuid)->findOrFail();
+        $locker = Locker::where('guid', $lockerGuid)->firstOrFail();
 
         $email = $request->get('email');
         $client = Client::where('email', $email)->firstOrCreate();
 
-        if (!$this->isLockerPresent()) {
-            return response()->json([
-                'message' => 'Locker is not present.',
-            ], 404);
-        }
+        $startMoment = $request->get('taken_at', Carbon::now());
+        $endMoment = $request->get('invalid_at', Carbon::now()->addDays(7));
 
-        if ($this->isLockerClaimed($locker)) {
+        $startMomentParsed = Carbon::parse($startMoment);
+        $endMomentParsed = Carbon::parse($endMoment);
+
+        if ($this->isLockerClaimed($locker, $startMomentParsed, $endMomentParsed)) {
             return response()->json([
-                'message' => 'Locker is already claimed.',
+                'message' =>
+                    'Locker is already claimed somewhere between ' .
+                    $startMomentParsed . 'and ' . $endMomentParsed . '.',
             ], 400);
         }
 
-        $client->lockerClaims()->create($request->only([
-            'client_id',
-            'locker_id',
-            'claim_hash',
-        ]));
-
-        return response()->json([
-            'message' => 'OK.',
+        $lockerClaim = $client->lockerClaims()->create([
+            'locker_id' => $locker->id,
+            'setup_token' => Str::random(),
+            'taken_at' => $startMomentParsed,
+            'invalid_at' => $endMomentParsed,
         ]);
 
+        // TODO: Send email
+
         return new LockerClaimResource($lockerClaim);
+    }
+
+    private function isLockerClaimed(Locker $locker, Carbon $startMoment, Carbon $endMoment)
+    {
+        // TODO: Write logic.
+
+        return false;
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $clientId
+     * @param  string  $lockerGuid
      * @param  int  $claimId
      * @return \Illuminate\Http\Response
      */
-    public function show(int $clientId, int $claimId)
+    public function show(string $lockerGuid, int $claimId)
     {
         $lockerClaim = LockerClaim::findOrFail($claimId);
         return new LockerClaimResource($lockerClaim);
@@ -81,12 +91,12 @@ class LockerClaimController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  int  $clientId
+     * @param  string  $lockerGuid
      * @param  int  $claimId
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function update(int $clientId, int $claimId, Request $request)
+    public function update(string $lockerGuid, int $claimId, Request $request)
     {
         throw new NotYetImplementedException();
 

@@ -16,9 +16,8 @@ class LockerClaimResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'client_id' => $this->client_id,
-            'locker_id' => $this->locker_id,
-            'key_hash' => $this->key_hash,
+            'taken_at' => $this->taken_at,
+            'invalid_at' => $this->invalid_at,
         ];
     }
 }

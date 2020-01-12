@@ -5,18 +5,18 @@
  */
 Route::get('/lockers', 'LockerController@index')->name('lockers.index');
 Route::post('/lockers', 'LockerController@store')->name('lockers.store');
-Route::get('/lockers/{guid}', 'LockerController@show')->name('lockers.show');
-Route::put('/lockers/{guid}', 'LockerController@update')->name('lockers.update');
-Route::delete('/lockers/{guid}', 'LockerController@destroy')->name('lockers.destroy');
+Route::get('/lockers/{lockerGuid}', 'LockerController@show')->name('lockers.show');
+Route::put('/lockers/{lockerGuid}', 'LockerController@update')->name('lockers.update');
+Route::delete('/lockers/{lockerGuid}', 'LockerController@destroy')->name('lockers.destroy');
 
 /**
  * Locker claims
  */
-Route::get('/lockers/{guid}/claims', 'LockerClaimController@index')->name('lockers.claims.index');
-Route::post('/lockers/{guid}/claims', 'LockerClaimController@store')->name('lockers.claims.store');
-Route::get('/lockers/{guid}/claims/{claimId}', 'LockerClaimController@show')->name('lockers.claims.show');
-Route::put('/lockers/{guid}/claims/{claimId}', 'LockerClaimController@update')->name('lockers.claims.update');
-Route::delete('/lockers/{guid}/claims/{claimId}', 'LockerClaimController@destroy')->name('lockers.claims.destroy');
+Route::get('/lockers/{lockerGuid}/claims', 'LockerClaimController@index')->name('lockers.claims.index');
+Route::post('/lockers/{lockerGuid}/claims', 'LockerClaimController@store')->name('lockers.claims.store');
+Route::get('/lockers/{lockerGuid}/claims/{claimId}', 'LockerClaimController@show')->name('lockers.claims.show');
+Route::put('/lockers/{lockerGuid}/claims/{claimId}', 'LockerClaimController@update')->name('lockers.claims.update');
+Route::delete('/lockers/{lockerGuid}/claims/{claimId}', 'LockerClaimController@destroy')->name('lockers.claims.destroy');
 
 /**
  * Managers

@@ -9,7 +9,6 @@ class LockerClaim extends Model
     protected $fillable = [
         'client_id',
         'locker_id',
-        'key_hash',
     ];
 
     public function locker()

@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Locker;
 use Illuminate\Foundation\Http\FormRequest;
 
 class LockerClaimStoreRequest extends FormRequest
@@ -25,7 +24,8 @@ class LockerClaimStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'guid' => 'required',
+            'email' => 'required|email',
+            'taken_at' => 'date',
         ];
     }
 }
