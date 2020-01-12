@@ -2,38 +2,77 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\TestMail;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\TestMail;
 
 class MailController extends Controller
 {
     public function claim(Request $request)
     {
-        $email = $request->input('email');
-        // //Mail::to('walker.bram@gmail.com')->send(new TestMail($name));
+        // Alternative mail option.
+        //Mail::to('walker.bram@gmail.com')->send(new TestMail($name));
 
-        Mail::send('emails.name', ['name' => 'Testing', 'email' => $email], function ($message) use($email) {
+        // Local id and token generation for now.
+        $email = $request->input('email');
+        $lockerid = Str::random(8);
+        $token = Str::random(16);
+        $url = 'https://b-locker.nl/l/'.$lockerid.'/set/'.$token;
+
+        Mail::send('emails.claim', ['lockerid' => $lockerid, 'url' => $url], function ($message) use($email) {
 
             $message->to($email);
-            $message->subject('Claim locker.');
+            $message->subject('Set passcode');
         });
 
-        return 'claim';
+        return 'claim sent to '.$email;
     }
 
     public function forgot(Request $request)
     {
-        return 'forgot';
+        // Local id and token generation for now.
+        $email = $request->input('email');
+        $lockerid = Str::random(8);
+
+        Mail::send('emails.forgot', ['lockerid' => $lockerid], function ($message) use ($email) {
+
+            $message->to($email);
+            $message->subject('Forgot passcode');
+        });
+
+        return 'forgot sent to ' . $email;
     }
 
     public function end(Request $request)
     {
-        return 'end';
+        // Local id and token generation for now.
+        $email = $request->input('email');
+        $lockerid = Str::random(8);
+
+        Mail::send('emails.end', ['lockerid' => $lockerid], function ($message) use ($email) {
+
+            $message->to($email);
+            $message->subject('Ownership ended');
+        });
+
+        return 'end sent to ' . $email;
     }
 
     public function lockdown(Request $request)
     {
-        return 'lockdown';
+        // Local id and token generation for now.
+        $email = $request->input('email');
+        $lockerid = Str::random(8);
+        $token = Str::random(16);
+        $url = 'https://b-locker.nl/l/' . $lockerid . '/lift/' . $token;
+
+        Mail::send('emails.lockdown', ['lockerid' => $lockerid, 'url' => $url], function ($message) use ($email) {
+
+            $message->to($email);
+            $message->subject('Someone tried to access your locker');
+        });
+
+        return 'lockdown sent to ' . $email;
     }
 }
