@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\TestMail;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -11,9 +10,6 @@ class MailController extends Controller
 {
     public function claim(Request $request)
     {
-        // Alternative mail option.
-        //Mail::to('walker.bram@gmail.com')->send(new TestMail($name));
-
         // Local id and token generation for now.
         $email = $request->input('email');
         $lockerid = Str::random(8);

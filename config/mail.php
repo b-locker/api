@@ -58,7 +58,7 @@ return [
     'from' => [
         'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
         'name' => 'B-locker',
-        'subject' => 'Claim locker',
+        'subject' => 'Your locker',
     ],
 
     /*
