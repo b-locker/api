@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Locker;
-use Illuminate\Support\Str;
+use App\Models\ClientNote;
 use Illuminate\Http\Request;
-use App\Http\Resources\LockerResource;
+use App\Http\Resources\ManagerResource;
 
-class LockerController extends Controller
+class ClientNoteController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,8 +15,8 @@ class LockerController extends Controller
      */
     public function index()
     {
-        $lockers = Locker::all();
-        return LockerResource::collection($lockers);
+        $clientNotes = ClientNote::all();
+        return ManagerResource::collection($clientNotes);
     }
 
     /**
@@ -26,10 +25,15 @@ class LockerController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store()
+    public function store(Request $request)
     {
-        $locker = Locker::create(['guid' => Str::random(8)]);
-        return new LockerResource($locker);
+        $clientNote = ClientNote::create($request->only(
+            'client_idd',
+            'note',
+            'created_by'
+        ));
+
+        return new ManagerResource($clientNote);
     }
 
     /**
@@ -40,8 +44,8 @@ class LockerController extends Controller
      */
     public function show($id)
     {
-        $locker = Locker::findOrFail($id);
-        return new LockerResource($locker);
+        $clientNote = ClientNote::findOrFail($id);
+        return new ManagerResource($clientNote);
     }
 
     /**
@@ -53,9 +57,14 @@ class LockerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $locker = Locker::findOrFail($id);
-        $locker->update($request->only('guid'));
-        return new LockerResource($locker);
+        $clientNote = ClientNote::findOrFail($id);
+        $clientNote->update($request->only(
+            'client_id',
+            'note',
+            'created_by'
+        ));
+
+        return new ManagerResource($clientNote);
     }
 
     /**
@@ -66,8 +75,9 @@ class LockerController extends Controller
      */
     public function destroy($id)
     {
-        $locker = Locker::findOrFail($id);
-        $locker->delete();
+        $clientNote = ClientNote::findOrFail($id);
+        $clientNote->delete();
+
         return response()->json([
             'message' => 'OK.',
         ]);

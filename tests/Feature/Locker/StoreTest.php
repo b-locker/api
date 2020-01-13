@@ -15,15 +15,20 @@ class StoreTest extends TestCase
      */
     public function test_can_store_record()
     {
-        $data = json_encode(array('guid' => 'testguid'));
+        $payload = [
+            'guid' => 'guid-test',
+        ];
 
-        $this->json('POST', route('lockers.store', json_encode(['guid' => 'testguid'])))
-            ->assertStatus(201)
+        $response = $this->json('POST', route('lockers.store', $payload));
+        $responseData = $response->getData()->data;
+
+        $response->assertStatus(201)
             ->assertExactJson([
                 'data' => [
-                    'id',
-                    'guid' => $data->guid,
+                    'id' => $responseData->id,
+                    'guid' => $payload['guid'],
                 ],
-            ]);
+            ])
+        ;
     }
 }

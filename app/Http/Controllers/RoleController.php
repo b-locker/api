@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Locker;
-use Illuminate\Support\Str;
+use App\Models\Role;
 use Illuminate\Http\Request;
-use App\Http\Resources\LockerResource;
+use App\Http\Resources\RoleResource;
 
-class LockerController extends Controller
+class RoleController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,8 +15,8 @@ class LockerController extends Controller
      */
     public function index()
     {
-        $lockers = Locker::all();
-        return LockerResource::collection($lockers);
+        $roles = Role::all();
+        return RoleResource::collection($roles);
     }
 
     /**
@@ -26,10 +25,11 @@ class LockerController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store()
+    public function store(Request $request)
     {
-        $locker = Locker::create(['guid' => Str::random(8)]);
-        return new LockerResource($locker);
+        $json = json_decode(($request->getContent()));
+        $role = Role::create($request->only('name'));
+        return new RoleResource($role);
     }
 
     /**
@@ -40,8 +40,8 @@ class LockerController extends Controller
      */
     public function show($id)
     {
-        $locker = Locker::findOrFail($id);
-        return new LockerResource($locker);
+        $role = Role::findOrFail($id);
+        return new RoleResource($role);
     }
 
     /**
@@ -53,9 +53,9 @@ class LockerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $locker = Locker::findOrFail($id);
-        $locker->update($request->only('guid'));
-        return new LockerResource($locker);
+        $role = Role::findOrFail($id);
+        $role->update($request->only('name'));
+        return new RoleResource($role);
     }
 
     /**
@@ -66,8 +66,8 @@ class LockerController extends Controller
      */
     public function destroy($id)
     {
-        $locker = Locker::findOrFail($id);
-        $locker->delete();
+        $role = Role::findOrFail($id);
+        $role->delete();
         return response()->json([
             'message' => 'OK.',
         ]);

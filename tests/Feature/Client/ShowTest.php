@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\Feature\Locker;
+namespace Tests\Feature\Client;
 
 use Tests\TestCase;
-use App\Models\Locker;
+use App\Models\Client;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -11,16 +11,16 @@ class ShowTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_can_get_1_model()
+    public function test_can_get_1_record()
     {
-        $locker = factory(Locker::class)->create();
+        $client = factory(Client::class)->create();
 
-        $this->json('GET', route('lockers.show', $locker->id))
+        $this->json('GET', route('clients.show', $client->id))
             ->assertStatus(200)
             ->assertExactJson([
                 'data' => [
-                    'id' => $locker->id,
-                    'guid' => $locker->guid,
+                    'id' => $client->id,
+                    'email' => $client->email,
                 ],
             ])
         ;
