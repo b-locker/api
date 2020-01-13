@@ -23,7 +23,7 @@ class LockerClaimController extends Controller
     public function index(string $lockerGuid)
     {
         $locker = Locker::where('guid', $lockerGuid)->firstOrFail();
-        $lockerClaims = $locker->lockerClaims;
+        $lockerClaims = $locker->claims;
 
         return LockerClaimResource::collection($lockerClaims);
     }
