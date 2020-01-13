@@ -18,7 +18,7 @@ class MailController extends Controller
         $email = $request->input('email');
         $lockerid = Str::random(8);
         $token = Str::random(16);
-        $url = 'https://b-locker.nl/l/'.$lockerid.'/set/'.$token;
+        $url = 'https://b-locker.nl/claim/passcode?id=' . e($lockerid) . '&token=' . e($token);
 
         Mail::send('emails.claim', ['lockerid' => $lockerid, 'url' => $url], function ($message) use($email) {
 
@@ -38,7 +38,7 @@ class MailController extends Controller
         Mail::send('emails.forgot', ['lockerid' => $lockerid], function ($message) use ($email) {
 
             $message->to($email);
-            $message->subject('Forgot passcode');
+            $message->subject('New locker passcode');
         });
 
         return 'forgot sent to ' . $email;
@@ -65,7 +65,7 @@ class MailController extends Controller
         $email = $request->input('email');
         $lockerid = Str::random(8);
         $token = Str::random(16);
-        $url = 'https://b-locker.nl/l/' . $lockerid . '/lift/' . $token;
+        $url = 'https://b-locker.nl/lockdown?id=' . e($lockerid) . '&token=' . e($token);
 
         Mail::send('emails.lockdown', ['lockerid' => $lockerid, 'url' => $url], function ($message) use ($email) {
 
