@@ -71,7 +71,7 @@
 
 <body>
     <div class="container">
-        <h1>B-locker</h1>
+        <h1>{{ config('app.name') }}</h1>
         <p style="font-size: 25px; margin:0;">Ownership ended</p>
         <p style="color: red; "> {{$lockerGuid}}</p>
         <p style="padding-bottom: 10px;">Locker {{$lockerGuid}} ownership has been revoked.</p>

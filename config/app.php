@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('B-Locker'),
+    'name' => env('APP_NAME', 'B-Locker'),
 
     /*
     |--------------------------------------------------------------------------
@@ -52,7 +52,7 @@ return [
     |
     */
 
-    'url' => 'https://b-locker.nl',
+    'url' => env('APP_URL', 'http://localhost'),
 
     'asset_url' => env('ASSET_URL', null),
 
