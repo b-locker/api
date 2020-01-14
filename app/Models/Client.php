@@ -10,6 +10,11 @@ class Client extends Model
         'email',
     ];
 
+    public function lockerClaims()
+    {
+        return $this->hasMany(LockerClaim::class);
+    }
+
     public function notes()
     {
         return $this->hasMany(ClientNote::class);

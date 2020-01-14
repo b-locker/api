@@ -2,7 +2,9 @@
     "preset": "laravel",
     "disabled": [
         "NoInlineVarDocs",
-        "NoLeadingSlashesOnRoutePaths"
+        "NoLeadingSlashesOnRoutePaths",
+        "SpaceAfterSoleNotOperator",
+        "NoParensEmptyInstantiations"
     ],
     "excluded": [
         "tests/"
