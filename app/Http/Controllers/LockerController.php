@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Locker;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Resources\LockerResource;
 
@@ -25,9 +26,9 @@ class LockerController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store()
     {
-        $locker = Locker::create($request->only('guid'));
+        $locker = Locker::create(['guid' => Str::random(8)]);
         return new LockerResource($locker);
     }
 

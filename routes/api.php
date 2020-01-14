@@ -1,6 +1,21 @@
 <?php
 
 /**
+ * Managers
+ */
+Route::get('/managers', 'ManagerController@index')->name('managers.index');
+Route::post('/managers', 'ManagerController@store')->name('managers.store');
+Route::get('/managers/{id}', 'ManagerController@show')->name('managers.show');
+Route::put('/managers/{id}', 'ManagerController@update')->name('managers.update');
+Route::delete('/managers/{id}', 'ManagerController@destroy')->name('managers.destroy');
+
+/**
+ * Manager auth
+ */
+Route::post('/managers/register', 'ManagerController@register')->name('managers.register');
+Route::post('/managers/login', 'ManagerController@login')->name('managers.login');
+
+/**
  * Lockers
  */
 Route::get('/lockers', 'LockerController@index')->name('lockers.index');
@@ -18,14 +33,9 @@ Route::get('/lockers/{lockerGuid}/claims/{claimId}', 'LockerClaimController@show
 Route::put('/lockers/{lockerGuid}/claims/{claimId}', 'LockerClaimController@update')->name('lockers.claims.update');
 Route::delete('/lockers/{lockerGuid}/claims/{claimId}', 'LockerClaimController@destroy')->name('lockers.claims.destroy');
 
-/**
- * Managers
- */
-Route::get('/managers', 'ManagerController@index')->name('managers.index');
-Route::post('/managers', 'ManagerController@store')->name('managers.store');
-Route::get('/managers/{id}', 'ManagerController@show')->name('managers.show');
-Route::put('/managers/{id}', 'ManagerController@update')->name('managers.update');
-Route::delete('/managers/{id}', 'ManagerController@destroy')->name('managers.destroy');
+// Route::group(['middleware' => ['jwt.verify']], function() {
+//     Route::get('/lockers', 'LockerController@index')->name('lockers.index');
+// });
 
 /**
  * Clients
@@ -44,3 +54,9 @@ Route::post('/clients/{clientId}/notes', 'ClientNoteController@store')->name('cl
 Route::get('/clients/{clientId}/notes/{id}', 'ClientNoteController@show')->name('clients.notes.show');
 Route::put('/clients/{clientId}/notes/{id}', 'ClientNoteController@update')->name('clients.notes.update');
 Route::delete('/clients/{clientId}/notes/{id}', 'ClientNoteController@destroy')->name('clients.notes.destroy');
+
+// Mail tests.
+Route::post('/mail/claim', 'MailController@claim')->name('mail.claim');
+Route::post('/mail/forgot', 'MailController@forgot')->name('mail.forgot');
+Route::post('/mail/end', 'MailController@end')->name('mail.end');
+Route::post('/mail/lockdown', 'MailController@lockdown')->name('mail.lockdown');
