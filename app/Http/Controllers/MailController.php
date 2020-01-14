@@ -8,22 +8,6 @@ use Illuminate\Support\Facades\Mail;
 
 class MailController extends Controller
 {
-    public function claim(Request $request)
-    {
-        // Local id and token generation for now.
-        $email = $request->input('email');
-        $lockerGuid = Str::random(8);
-        $token = Str::random(16);
-        $url = config('app.url').'/claim/passcode?id=' . e($lockerGuid) . '&token=' . e($token);
-
-        Mail::send('emails.claim', ['lockerGuid' => $lockerGuid, 'url' => $url], function ($message) use($email) {
-            $message->to($email);
-            $message->subject('Set passcode');
-        });
-
-        return 'claim sent to '.$email;
-    }
-
     public function forgot(Request $request)
     {
         // Local id and token generation for now.
