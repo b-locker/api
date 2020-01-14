@@ -8,6 +8,8 @@ use App\Models\Locker;
 use App\Models\LockerClaim;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Mail\LockerSetupMail;
+use Illuminate\Support\Facades\Mail;
 use App\Http\Resources\LockerClaimResource;
 use App\Exceptions\NotYetImplementedException;
 use App\Http\Requests\LockerClaimStoreRequest;
@@ -67,7 +69,8 @@ class LockerClaimController extends Controller
             'end_at' => $endMomentParsed,
         ]);
 
-        // TODO: Send email
+        $mail = new LockerSetupMail($lockerClaim);
+        Mail::to($client->email)->send($mail);
 
         return new LockerClaimResource($lockerClaim);
     }
