@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class LockerResource extends JsonResource
+class LockerClaimResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,8 +16,10 @@ class LockerResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'guid' => $this->guid,
-            'is_currently_available' => $this->isCurrentlyAvailable(),
+            'is_set_up' => $this->isSetUp(),
+            'is_currently_in_effect' => $this->isCurrentlyInEffect(),
+            'start_at' => $this->start_at,
+            'end_at' => $this->end_at,
         ];
     }
 }

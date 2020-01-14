@@ -35,39 +35,41 @@ class LockerController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  string  $lockerGuid
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(string $lockerGuid)
     {
-        $locker = Locker::findOrFail($id);
+        $locker = Locker::where('guid', $lockerGuid)->firstOrFail();
         return new LockerResource($locker);
     }
 
     /**
      * Update the specified resource in storage.
      *
+     * @param  string  $lockerGuid
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(string $lockerGuid, Request $request)
     {
-        $locker = Locker::findOrFail($id);
+        $locker = Locker::where('guid', $lockerGuid)->firstOrFail();
         $locker->update($request->only('guid'));
+
         return new LockerResource($locker);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  string  $lockerGuid
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(string $lockerGuid)
     {
-        $locker = Locker::findOrFail($id);
+        $locker = Locker::where('guid', $lockerGuid)->firstOrFail();
         $locker->delete();
+
         return response()->json([
             'message' => 'OK.',
         ]);
