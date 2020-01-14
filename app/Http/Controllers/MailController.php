@@ -12,12 +12,11 @@ class MailController extends Controller
     {
         // Local id and token generation for now.
         $email = $request->input('email');
-        $lockerid = Str::random(8);
+        $lockerGuid = Str::random(8);
         $token = Str::random(16);
-        $url = 'https://b-locker.nl/claim/passcode?id=' . e($lockerid) . '&token=' . e($token);
+        $url = config('app.url').'/claim/passcode?id=' . e($lockerGuid) . '&token=' . e($token);
 
-        Mail::send('emails.claim', ['lockerid' => $lockerid, 'url' => $url], function ($message) use($email) {
-
+        Mail::send('emails.claim', ['lockerGuid' => $lockerGuid, 'url' => $url], function ($message) use($email) {
             $message->to($email);
             $message->subject('Set passcode');
         });
@@ -29,10 +28,9 @@ class MailController extends Controller
     {
         // Local id and token generation for now.
         $email = $request->input('email');
-        $lockerid = Str::random(8);
+        $lockerGuid = Str::random(8);
 
-        Mail::send('emails.forgot', ['lockerid' => $lockerid], function ($message) use ($email) {
-
+        Mail::send('emails.forgot', ['lockerGuid' => $lockerGuid], function ($message) use ($email) {
             $message->to($email);
             $message->subject('New locker passcode');
         });
@@ -44,9 +42,9 @@ class MailController extends Controller
     {
         // Local id and token generation for now.
         $email = $request->input('email');
-        $lockerid = Str::random(8);
+        $lockerGuid = Str::random(8);
 
-        Mail::send('emails.end', ['lockerid' => $lockerid], function ($message) use ($email) {
+        Mail::send('emails.end', ['lockerGuid' => $lockerGuid], function ($message) use ($email) {
 
             $message->to($email);
             $message->subject('Ownership ended');
@@ -59,11 +57,11 @@ class MailController extends Controller
     {
         // Local id and token generation for now.
         $email = $request->input('email');
-        $lockerid = Str::random(8);
+        $lockerGuid = Str::random(8);
         $token = Str::random(16);
-        $url = 'https://b-locker.nl/lockdown?id=' . e($lockerid) . '&token=' . e($token);
+        $url = config('app.url').'/lockdown?id=' . e($lockerGuid) . '&token=' . e($token);
 
-        Mail::send('emails.lockdown', ['lockerid' => $lockerid, 'url' => $url], function ($message) use ($email) {
+        Mail::send('emails.lockdown', ['lockerGuid' => $lockerGuid, 'url' => $url], function ($message) use ($email) {
 
             $message->to($email);
             $message->subject('Someone tried to access your locker');

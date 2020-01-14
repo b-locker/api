@@ -3,7 +3,7 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>Ownership ended {{ $lockerid }}</title>
+    <title>Ownership ended {{ $lockerGuid }}</title>
     <style>
         /* -------------------------------------
           GLOBAL RESETS
@@ -73,7 +73,7 @@
     <div class="container">
         <h1>B-locker</h1>
         <p style="font-size: 25px; margin:0;">Ownership ended</p>
-        <p style="color: red; "> {{$lockerid}}</p>
-        <p style="padding-bottom: 10px;">Locker {{$lockerid}} ownership has been revoked.</p>
+        <p style="color: red; "> {{$lockerGuid}}</p>
+        <p style="padding-bottom: 10px;">Locker {{$lockerGuid}} ownership has been revoked.</p>
     </div>
 </body>

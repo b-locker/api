@@ -3,7 +3,7 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>Lockdown locker {{ $lockerid }}</title>
+    <title>Lockdown locker {{ $lockerGuid }}</title>
     <style>
         /* -------------------------------------
           GLOBAL RESETS
@@ -73,7 +73,7 @@
     <div class="container">
         <h1>B-locker</h1>
         <p style="font-size: 25px; margin:0;">Lockdown</p>
-        <p style="color: red; "> {{$lockerid}}</p>
+        <p style="color: red; "> {{$lockerGuid}}</p>
         <p style="padding-bottom: 10px;">Due to repeated failed unlock attempts, we have put your locker in lockdown. Click the link to uplift the lockdown.</p>
         <a href="{{ $url }}">Lift lockdown</a>
     </div>

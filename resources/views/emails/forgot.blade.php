@@ -3,7 +3,7 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>New passcode {{ $lockerid }}</title>
+    <title>New passcode {{ $lockerGuid }}</title>
     <style>
         /* -------------------------------------
           GLOBAL RESETS
@@ -73,7 +73,7 @@
     <div class="container">
         <h1>B-locker</h1>
         <p style="font-size: 25px; margin:0;">New passcode set</p>
-        <p style="color: red; "> {{$lockerid}}</p>
+        <p style="color: red; "> {{$lockerGuid}}</p>
         <p style="padding-bottom: 10px;">A new passcode was set.</p>
     </div>
 </body>

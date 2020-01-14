@@ -3,7 +3,7 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>Claim locker {{ $lockerid }}</title>
+    <title>Claim locker</title>
     <style>
         /* -------------------------------------
           GLOBAL RESETS
@@ -73,7 +73,7 @@
     <div class="container">
         <h1>B-locker</h1>
         <p style="font-size: 25px; margin:0;">Claim locker</p>
-        <p style="color: red; "> {{$lockerid}}</p>
+        <p style="color: red; "> {{$lockerGuid}}</p>
         <p style="padding-bottom: 10px;">Set your locker passcode</p>
         <a href="{{ $url }}">Set passcode</a>
     </div>
