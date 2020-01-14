@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use App\Http\Resources\LockerClaimResource;
 use App\Exceptions\NotYetImplementedException;
 use App\Http\Requests\LockerClaimStoreRequest;
+use App\Http\Requests\LockerClaimUpdateRequest;
 
 class LockerClaimController extends Controller
 {
@@ -40,39 +41,35 @@ class LockerClaimController extends Controller
         $locker = Locker::where('guid', $lockerGuid)->firstOrFail();
 
         $email = $request->get('email');
-        $client = Client::where('email', $email)->firstOrCreate();
+        $client = Client::where('email', $email)->firstOrCreate([
+            'email' => $email,
+        ]);
 
-        $startMoment = $request->get('taken_at', Carbon::now());
-        $endMoment = $request->get('invalid_at', Carbon::now()->addDays(7));
+        $startMoment = $request->get('start_at', Carbon::now());
+        $endMoment = $request->get('end_at', Carbon::now()->addDays(7));
 
         $startMomentParsed = Carbon::parse($startMoment);
         $endMomentParsed = Carbon::parse($endMoment);
 
-        if ($this->isLockerClaimed($locker, $startMomentParsed, $endMomentParsed)) {
+        if (!$locker->isCurrentlyAvailable()) {
             return response()->json([
                 'message' =>
-                    'Locker is already claimed somewhere between ' .
-                    $startMomentParsed . 'and ' . $endMomentParsed . '.',
+                    'The locker is not available, because it is already ' .
+                    'claimed somewhere between ' . $startMomentParsed .
+                    ' and ' . $endMomentParsed . '.',
             ], 400);
         }
 
         $lockerClaim = $client->lockerClaims()->create([
             'locker_id' => $locker->id,
             'setup_token' => Str::random(),
-            'taken_at' => $startMomentParsed,
-            'invalid_at' => $endMomentParsed,
+            'start_at' => $startMomentParsed,
+            'end_at' => $endMomentParsed,
         ]);
 
         // TODO: Send email
 
         return new LockerClaimResource($lockerClaim);
-    }
-
-    private function isLockerClaimed(Locker $locker, Carbon $startMoment, Carbon $endMoment)
-    {
-        // TODO: Write logic.
-
-        return false;
     }
 
     /**
@@ -93,19 +90,17 @@ class LockerClaimController extends Controller
      *
      * @param  string  $lockerGuid
      * @param  int  $claimId
-     * @param  \Illuminate\Http\Request  $request
+     * @param  LockerClaimUpdateRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function update(string $lockerGuid, int $claimId, Request $request)
+    public function update(string $lockerGuid, int $claimId, LockerClaimUpdateRequest $request)
     {
-        throw new NotYetImplementedException();
+        $lockerClaim = LockerClaim::findOrFail($claimId);
+        $lockerClaim->setup_token = null;
+        $lockerClaim->key_hash = bcrypt($request->get('key'));
+        $lockerClaim->save();
 
-        // $lockerClaim = LockerClaim::findOrFail($claimId);
-        // $lockerClaim->update([
-        //     'invalid_at' => $request->get('invalid_at'),
-        // ]);
-
-        // return new LockerClaimResource($lockerClaim);
+        return new LockerClaimResource($lockerClaim);
     }
 
     /**

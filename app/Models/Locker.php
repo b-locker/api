@@ -10,6 +10,21 @@ class Locker extends Model
         'guid',
     ];
 
+    public function isCurrentlyAvailable()
+    {
+        if ($this->claims->count() === 0) {
+            return true;
+        }
+
+        foreach ($this->claims as $claim) {
+            if ($claim->isCurrentlyInEffect()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     public function claims()
     {
         $foreignKey = 'locker_id';
