@@ -30,9 +30,10 @@ class LockerSetupMail extends Mailable
         $this->lockerClaim = $lockerClaim;
 
         $this->setupUrl = sprintf(
-            '%s/claim/passcode?id=%s&token=%s',
+            '%s/claim/passcode?locker_guid=%s&claim_id=%s&token=%s',
             rtrim(config('app.url'), '/'),
             e($lockerClaim->locker->guid),
+            e($lockerClaim->id),
             e($lockerClaim->setup_token)
         );
     }
