@@ -10,6 +10,7 @@ use App\Http\Requests\ManagerLoginRequest;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use App\Http\Requests\ManagerStoreRequest;
 
+
 class ManagerController extends Controller
 {
     public function register(ManagerStoreRequest $request)
