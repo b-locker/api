@@ -3,6 +3,9 @@
 /**
  * Managers
  */
+
+use App\Http\Controllers\LockerClaimController;
+
 Route::get('/managers', 'ManagerController@index')->name('managers.index');
 Route::post('/managers', 'ManagerController@store')->name('managers.store');
 Route::get('/managers/{id}', 'ManagerController@show')->name('managers.show');
@@ -32,6 +35,8 @@ Route::post('/lockers/{lockerGuid}/claims', 'LockerClaimController@store')->name
 Route::get('/lockers/{lockerGuid}/claims/{claimId}', 'LockerClaimController@show')->name('lockers.claims.show');
 Route::put('/lockers/{lockerGuid}/claims/{claimId}', 'LockerClaimController@update')->name('lockers.claims.update');
 Route::delete('/lockers/{lockerGuid}/claims/{claimId}', 'LockerClaimController@destroy')->name('lockers.claims.destroy');
+
+Route::post('/lockers/{lockerGuid}/unlock', 'LockerClaimController@unlock')->name('lockers.claims.unlock');
 
 // Route::group(['middleware' => ['jwt.verify']], function() {
 //     Route::get('/lockers', 'LockerController@index')->name('lockers.index');

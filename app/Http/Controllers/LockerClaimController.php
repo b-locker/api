@@ -123,4 +123,9 @@ class LockerClaimController extends Controller
         //     'message' => 'OK.',
         // ]);
     }
+
+    public function unlock(LockerUnlockRequest $request)
+    {
+
+    }
 }
