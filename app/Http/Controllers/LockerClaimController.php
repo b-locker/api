@@ -53,7 +53,7 @@ class LockerClaimController extends Controller
         $startMomentParsed = Carbon::parse($startMoment);
         $endMomentParsed = Carbon::parse($endMoment);
 
-        if (!$locker->isCurrentlyAvailable()) {
+        if (!$locker->isCurrentlyClaimable()) {
             return response()->json([
                 'message' =>
                     'The locker is not available, because it is already ' .
