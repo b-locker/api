@@ -6,6 +6,7 @@ use App\Models\Locker;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Resources\LockerResource;
+use Illuminate\Support\Facades\Artisan;
 use App\Http\Requests\LockerUnlockRequest;
 use App\Exceptions\NotYetImplementedException;
 
@@ -86,17 +87,25 @@ class LockerController extends Controller
         $storedKeyHash = $activeClaim->key_hash;
         $key = $request->get('key');
 
-        if (password_verify($key, $storedKeyHash)) {
-            // TODO: Send signal to master
-
+        if (!password_verify($key, $storedKeyHash)) {
             return response()->json([
-                'message' => 'OK.',
-            ]);
-        } else {
-            return response()->json([
-                'message' => 'NOK.',
-            ], 401);
+                'message' => 'The provided key does not work.',
+            ], 400);
         }
+
+        $exitCode = Artisan::call('locker:unlock', [
+            'lockerGuid' => $locker->guid,
+        ]);
+
+        if ($exitCode !== 0) {
+            return response()->json([
+                'message' => 'Something wrong happened at our side.',
+            ], 500);
+        }
+
+        return response()->json([
+            'message' => 'OK.',
+        ]);
     }
 
     public function forgotKey(string $lockerGuid, Request $request)
