@@ -17,7 +17,7 @@ class LockerResource extends JsonResource
         return [
             'id' => $this->id,
             'guid' => $this->guid,
-            'is_currently_available' => $this->isCurrentlyAvailable(),
+            'is_currently_claimable' => $this->isCurrentlyClaimable(),
         ];
     }
 }
