@@ -6,6 +6,8 @@ use App\Models\Locker;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Resources\LockerResource;
+use App\Http\Requests\LockerUnlockRequest;
+use App\Exceptions\NotYetImplementedException;
 
 class LockerController extends Controller
 {
@@ -75,7 +77,7 @@ class LockerController extends Controller
         ]);
     }
 
-    public function unlock(string $lockerGuid, Request $request)
+    public function unlock(string $lockerGuid, LockerUnlockRequest $request)
     {
         $locker = Locker::where('guid', $lockerGuid)->firstOrFail();
         $activeClaim = $locker->activeClaim();
@@ -99,7 +101,11 @@ class LockerController extends Controller
 
     public function forgotKey(string $lockerGuid, Request $request)
     {
-        $locker = Locker::where('guid', $lockerGuid)->firstOrFail();
-        $activeClaim = $locker->activeClaim();
+        throw new NotYetImplementedException();
+
+        // $locker = Locker::where('guid', $lockerGuid)->firstOrFail();
+        // $activeClaim = $locker->activeClaim();
+
+        // TODO: ...
     }
 }
