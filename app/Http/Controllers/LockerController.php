@@ -74,4 +74,32 @@ class LockerController extends Controller
             'message' => 'OK.',
         ]);
     }
+
+    public function unlock(string $lockerGuid, Request $request)
+    {
+        $locker = Locker::where('guid', $lockerGuid)->firstOrFail();
+        $activeClaim = $locker->activeClaim();
+        // TODO: Add attempts and lock down
+
+        $storedKeyHash = $activeClaim->key_hash;
+        $key = $request->get('key');
+
+        if (password_verify($key, $storedKeyHash)) {
+            // TODO: Send signal to master
+
+            return response()->json([
+                'message' => 'OK.',
+            ]);
+        } else {
+            return response()->json([
+                'message' => 'NOK.',
+            ], 401);
+        }
+    }
+
+    public function forgotKey(string $lockerGuid, Request $request)
+    {
+        $locker = Locker::where('guid', $lockerGuid)->firstOrFail();
+        $activeClaim = $locker->activeClaim();
+    }
 }

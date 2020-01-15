@@ -3,9 +3,6 @@
 /**
  * Managers
  */
-
-use App\Http\Controllers\LockerClaimController;
-
 Route::get('/managers', 'ManagerController@index')->name('managers.index');
 Route::post('/managers', 'ManagerController@store')->name('managers.store');
 Route::get('/managers/{id}', 'ManagerController@show')->name('managers.show');
@@ -27,16 +24,20 @@ Route::get('/lockers/{lockerGuid}', 'LockerController@show')->name('lockers.show
 Route::put('/lockers/{lockerGuid}', 'LockerController@update')->name('lockers.update');
 Route::delete('/lockers/{lockerGuid}', 'LockerController@destroy')->name('lockers.destroy');
 
+Route::post('/lockers/{lockerGuid}/unlock', 'LockerController@unlock')->name('lockers.unlock');
+Route::post('/lockers/{lockerGuid}/forgot/key', 'LockerController@forgotKey')->name('lockers.forgot.key');
+
 /**
  * Locker claims
  */
 Route::get('/lockers/{lockerGuid}/claims', 'LockerClaimController@index')->name('lockers.claims.index');
 Route::post('/lockers/{lockerGuid}/claims', 'LockerClaimController@store')->name('lockers.claims.store');
 Route::get('/lockers/{lockerGuid}/claims/{claimId}', 'LockerClaimController@show')->name('lockers.claims.show');
-Route::put('/lockers/{lockerGuid}/claims/{claimId}', 'LockerClaimController@update')->name('lockers.claims.update');
 Route::delete('/lockers/{lockerGuid}/claims/{claimId}', 'LockerClaimController@destroy')->name('lockers.claims.destroy');
 
-Route::post('/lockers/{lockerGuid}/unlock', 'LockerClaimController@unlock')->name('lockers.claims.unlock');
+Route::post('/lockers/{lockerGuid}/claims/{claimId}/setup', 'LockerClaimController@setup')->name('lockers.claims.setup');
+Route::post('/lockers/{lockerGuid}/claims/{claimId}/reset/key', 'LockerClaimController@resetKey')->name('lockers.claims.reset.key');
+Route::post('/lockers/{lockerGuid}/claims/{claimId}/end', 'LockerClaimController@end')->name('lockers.claims.end');
 
 // Route::group(['middleware' => ['jwt.verify']], function() {
 //     Route::get('/lockers', 'LockerController@index')->name('lockers.index');
@@ -61,7 +62,6 @@ Route::put('/clients/{clientId}/notes/{id}', 'ClientNoteController@update')->nam
 Route::delete('/clients/{clientId}/notes/{id}', 'ClientNoteController@destroy')->name('clients.notes.destroy');
 
 // Mail tests.
-Route::post('/mail/claim', 'MailController@claim')->name('mail.claim');
 Route::post('/mail/forgot', 'MailController@forgot')->name('mail.forgot');
 Route::post('/mail/end', 'MailController@end')->name('mail.end');
 Route::post('/mail/lockdown', 'MailController@lockdown')->name('mail.lockdown');

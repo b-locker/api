@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Models\LockerClaim;
 use Illuminate\Foundation\Http\FormRequest;
 
 class LockerUnlockRequest extends FormRequest
