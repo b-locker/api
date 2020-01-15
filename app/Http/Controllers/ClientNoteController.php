@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ClientNoteStoreRequest;
 use App\Models\ClientNote;
 use Illuminate\Http\Request;
-use App\Http\Resources\ManagerResource;
+use App\Http\Resources\ClientNoteResource;
 
 class ClientNoteController extends Controller
 {
@@ -16,24 +17,24 @@ class ClientNoteController extends Controller
     public function index()
     {
         $clientNotes = ClientNote::all();
-        return ManagerResource::collection($clientNotes);
+        return ClientNoteResource::collection($clientNotes);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  ClientNoteStoreRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ClientNoteStoreRequest $request)
     {
         $clientNote = ClientNote::create($request->only(
-            'client_idd',
-            'note',
+            'client_id',
+            'body',
             'created_by'
         ));
 
-        return new ManagerResource($clientNote);
+        return new ClientNoteResource($clientNote);
     }
 
     /**
@@ -45,26 +46,26 @@ class ClientNoteController extends Controller
     public function show($id)
     {
         $clientNote = ClientNote::findOrFail($id);
-        return new ManagerResource($clientNote);
+        return new ClientNoteResource($clientNote);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  ClientNoteStoreRequest  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ClientNoteStoreRequest $request, $id)
     {
         $clientNote = ClientNote::findOrFail($id);
         $clientNote->update($request->only(
             'client_id',
-            'note',
+            'body',
             'created_by'
         ));
 
-        return new ManagerResource($clientNote);
+        return new ClientNoteResource($clientNote);
     }
 
     /**
