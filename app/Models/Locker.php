@@ -10,19 +10,19 @@ class Locker extends Model
         'guid',
     ];
 
-    public function isCurrentlyAvailable()
+    public function isCurrentlyClaimable()
     {
-        if ($this->claims->count() === 0) {
-            return true;
-        }
+        // TODO: Check for start and end date if lockers can be reserved
+        return (empty($this->activeClaim()));
+    }
 
+    public function activeClaim()
+    {
         foreach ($this->claims as $claim) {
-            if ($claim->isCurrentlyInEffect()) {
-                return false;
+            if ($claim->isActive()) {
+                return $claim;
             }
         }
-
-        return true;
     }
 
     public function claims()

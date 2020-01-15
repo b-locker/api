@@ -35,7 +35,7 @@ class LockerClaim extends Model
      *
      * @return boolean
      */
-    public function isCurrentlyInEffect()
+    public function isActive()
     {
         if (!$this->isSetUp()) {
             return false;
