@@ -3,6 +3,8 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Symfony\Component\Process\Process;
+use Symfony\Component\Process\Exception\ProcessFailedException;
 
 class EndClaim extends Command
 {
@@ -11,14 +13,14 @@ class EndClaim extends Command
      *
      * @var string
      */
-    protected $signature = 'command:name';
+    protected $signature = 'locker:endclaim {lockerGuid}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'End claim of a specific locker.';
 
     /**
      * Create a new command instance.
@@ -37,6 +39,15 @@ class EndClaim extends Command
      */
     public function handle()
     {
-        //
+        $lockerGuid = $this->argument('lockerGuid');
+
+        $process = new Process([config('hardware.tunnel_binary'), $lockerGuid, 'endclaim']);
+        $process->run();
+
+        if (!$process->isSuccessful()) {
+            throw new ProcessFailedException($process);
+        }
+
+        $this->info($process->getOutput());
     }
 }
