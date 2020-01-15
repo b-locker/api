@@ -7,6 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class LockerClaim extends Model
 {
+    /**
+     * The amount of consecutive authentication fails a client can make.
+     */
+    const MAX_FAILED_AUTH_ATTEMPTS = 5;
+
     protected $fillable = [
         'client_id',
         'locker_id',
@@ -19,6 +24,11 @@ class LockerClaim extends Model
         'start_at',
         'end_at',
     ];
+
+    public function attemptsLeft()
+    {
+        return static::MAX_FAILED_AUTH_ATTEMPTS - $this->failed_attempts;
+    }
 
     /**
      * Whether the locker key is set or not.

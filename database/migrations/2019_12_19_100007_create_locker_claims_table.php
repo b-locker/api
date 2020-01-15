@@ -19,6 +19,7 @@ class CreateLockerClaimsTable extends Migration
             $table->bigInteger('locker_id')->unsigned();
             $table->string('setup_token')->nullable();
             $table->string('key_hash')->nullable();
+            $table->tinyInteger('failed_attempts')->unsigned()->default(0);
             $table->timestamp('start_at')->useCurrent();
             $table->timestamp('end_at')->nullable();
             $table->timestamps();

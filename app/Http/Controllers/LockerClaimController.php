@@ -98,12 +98,7 @@ class LockerClaimController extends Controller
      */
     public function update(string $lockerGuid, int $claimId, LockerClaimUpdateRequest $request)
     {
-        $lockerClaim = LockerClaim::findOrFail($claimId);
-        $lockerClaim->setup_token = null;
-        $lockerClaim->key_hash = bcrypt($request->get('key'));
-        $lockerClaim->save();
-
-        return new LockerClaimResource($lockerClaim);
+        //
     }
 
     /**
@@ -122,5 +117,23 @@ class LockerClaimController extends Controller
         // return response()->json([
         //     'message' => 'OK.',
         // ]);
+    }
+
+    /**
+     * Setup is used to confirm a locker claim.
+     *
+     * @param string $lockerGuid
+     * @param int $claimId
+     * @param LockerClaimUpdateRequest $request
+     * @return void
+     */
+    public function setup(string $lockerGuid, int $claimId, LockerClaimUpdateRequest $request)
+    {
+        $lockerClaim = LockerClaim::findOrFail($claimId);
+        $lockerClaim->setup_token = null;
+        $lockerClaim->key_hash = bcrypt($request->get('key'));
+        $lockerClaim->save();
+
+        return new LockerClaimResource($lockerClaim);
     }
 }

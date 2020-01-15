@@ -3,12 +3,22 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Exceptions\Models\LockerException;
 
 class Locker extends Model
 {
     protected $fillable = [
         'guid',
     ];
+
+    public function isUnlockable()
+    {
+        if (!$this->activeClaim()) {
+            throw new LockerException('Locker is not claimed.');
+        }
+
+        return ($this->activeClaim()->attemptsLeft() > 0);
+    }
 
     public function isCurrentlyClaimable()
     {

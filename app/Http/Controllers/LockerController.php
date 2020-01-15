@@ -6,6 +6,9 @@ use App\Models\Locker;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Resources\LockerResource;
+use Illuminate\Support\Facades\Artisan;
+use App\Http\Requests\LockerUnlockRequest;
+use App\Exceptions\NotYetImplementedException;
 
 class LockerController extends Controller
 {
@@ -73,5 +76,67 @@ class LockerController extends Controller
         return response()->json([
             'message' => 'OK.',
         ]);
+    }
+
+    public function unlock(string $lockerGuid, LockerUnlockRequest $request)
+    {
+        $locker = Locker::where('guid', $lockerGuid)->firstOrFail();
+
+        if (!$locker->isUnlockable()) {
+            return response()->json([
+                'message' => 'The locker is not unlockable. It could be locked down due to too many failed attempts.',
+            ], 400);
+        }
+
+        $lockerClaim = $locker->activeClaim();
+
+        $storedKeyHash = $lockerClaim->key_hash;
+        $key = $request->get('key');
+
+        if (!password_verify($key, $storedKeyHash)) {
+            $lockerClaim->failed_attempts++;
+            $lockerClaim->save();
+
+            $message = 'The provided key does not work.';
+
+            $attemptsLeft = $lockerClaim->attemptsLeft();
+
+            if ($attemptsLeft > 0) {
+                $message .= ' You have ' . $attemptsLeft . ' attempt(s) left.';
+            } else {
+                $message .= ' You have no more attempts left.';
+            }
+
+            return response()->json([
+                'message' => $message,
+            ], 400);
+        }
+
+        $lockerClaim->failed_attempts = 0;
+        $lockerClaim->save();
+
+        $exitCode = Artisan::call('locker:unlock', [
+            'lockerGuid' => $locker->guid,
+        ]);
+
+        if ($exitCode !== 0) {
+            return response()->json([
+                'message' => 'Oops. Something wrong happened at our side.',
+            ], 500);
+        }
+
+        return response()->json([
+            'message' => 'OK.',
+        ]);
+    }
+
+    public function forgotKey(string $lockerGuid, Request $request)
+    {
+        throw new NotYetImplementedException();
+
+        // $locker = Locker::where('guid', $lockerGuid)->firstOrFail();
+        // $activeClaim = $locker->activeClaim();
+
+        // TODO: ...
     }
 }

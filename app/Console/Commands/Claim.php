@@ -13,14 +13,14 @@ class Claim extends Command
      *
      * @var string
      */
-    protected $signature = 'locker:unlock {lockerGuid}';
+    protected $signature = 'locker:claim {lockerGuid}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Unlock specific locker';
+    protected $description = 'Claim specific locker';
 
     /**
      * Create a new command instance.
