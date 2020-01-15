@@ -30,3 +30,4 @@ _The official B-Locker API Server._
 1. `php artisan jwt:secret`
 1. _Do not forget to change database config in `.env`_
 1. _Do not forget to change e-mail config in `.env`_
+1. _Do not forget to change HW_TUNNEL_BIN config in `.env`_
