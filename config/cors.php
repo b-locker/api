@@ -26,7 +26,7 @@ return [
         'allow_methods' => [
             'POST',
             'GET',
-            // 'OPTIONS',
+            'OPTIONS',
             'PUT',
             'PATCH',
             'DELETE',
