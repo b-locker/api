@@ -6,6 +6,8 @@ use App\Models\Locker;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Resources\LockerResource;
+use App\Http\Requests\LockerUnlockRequest;
+use App\Exceptions\NotYetImplementedException;
 
 class LockerController extends Controller
 {
@@ -73,5 +75,37 @@ class LockerController extends Controller
         return response()->json([
             'message' => 'OK.',
         ]);
+    }
+
+    public function unlock(string $lockerGuid, LockerUnlockRequest $request)
+    {
+        $locker = Locker::where('guid', $lockerGuid)->firstOrFail();
+        $activeClaim = $locker->activeClaim();
+        // TODO: Add attempts and lock down
+
+        $storedKeyHash = $activeClaim->key_hash;
+        $key = $request->get('key');
+
+        if (password_verify($key, $storedKeyHash)) {
+            // TODO: Send signal to master
+
+            return response()->json([
+                'message' => 'OK.',
+            ]);
+        } else {
+            return response()->json([
+                'message' => 'NOK.',
+            ], 401);
+        }
+    }
+
+    public function forgotKey(string $lockerGuid, Request $request)
+    {
+        throw new NotYetImplementedException();
+
+        // $locker = Locker::where('guid', $lockerGuid)->firstOrFail();
+        // $activeClaim = $locker->activeClaim();
+
+        // TODO: ...
     }
 }
