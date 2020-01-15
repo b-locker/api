@@ -17,7 +17,7 @@ class LockerClaimResource extends JsonResource
         return [
             'id' => $this->id,
             'is_set_up' => $this->isSetUp(),
-            'is_currently_in_effect' => $this->isCurrentlyInEffect(),
+            'is_active' => $this->isActive(),
             'start_at' => $this->start_at,
             'end_at' => $this->end_at,
         ];
