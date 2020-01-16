@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Http\Resources\ClientResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class LockerResource extends JsonResource
@@ -17,7 +18,9 @@ class LockerResource extends JsonResource
         return [
             'id' => $this->id,
             'guid' => $this->guid,
-            'is_currently_claimable' => $this->isCurrentlyClaimable(),
+            'active_claim' => optional($this->activeClaim(), function ($claim) {
+                return new LockerClaimResource($claim);
+            }),
         ];
     }
 }
