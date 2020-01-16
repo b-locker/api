@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Client;
 use App\Models\Locker;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Mail\LockerForgotKeyMail;
+use Illuminate\Support\Facades\Mail;
 use App\Http\Resources\LockerResource;
 use Illuminate\Support\Facades\Artisan;
 use App\Http\Requests\LockerUnlockRequest;
@@ -130,13 +133,20 @@ class LockerController extends Controller
         ]);
     }
 
-    public function forgotKey(string $lockerGuid, Request $request)
+    public function forgotKey(string $lockerGuid)
     {
-        throw new NotYetImplementedException();
+        $locker = Locker::where('guid', $lockerGuid)->firstOrFail();
+        $activeClaim = $locker->activeClaim();
 
-        // $locker = Locker::where('guid', $lockerGuid)->firstOrFail();
-        // $activeClaim = $locker->activeClaim();
+        $activeClaim->setup_token = Str::random();
+        $activeClaim->save();
 
-        // TODO: ...
+        $client = $activeClaim->client;
+        $mail = new LockerForgotKeyMail($activeClaim);
+        Mail::to($client->email)->send($mail);
+
+        return response()->json([
+            'message' => 'OK.',
+        ]);
     }
 }

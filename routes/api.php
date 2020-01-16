@@ -25,7 +25,7 @@ Route::put('/lockers/{lockerGuid}', 'LockerController@update')->name('lockers.up
 Route::delete('/lockers/{lockerGuid}', 'LockerController@destroy')->name('lockers.destroy');
 
 Route::post('/lockers/{lockerGuid}/unlock', 'LockerController@unlock')->name('lockers.unlock');
-Route::post('/lockers/{lockerGuid}/forgot/key', 'LockerController@forgotKey')->name('lockers.forgot.key');
+Route::post('/lockers/{lockerGuid}/forgotkey', 'LockerController@forgotKey')->name('lockers.forgot.key');
 
 /**
  * Locker claims
