@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources;
 
-use App\Http\Resources\ClientResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class LockerResource extends JsonResource
