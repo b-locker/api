@@ -3,7 +3,7 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>New passcode {{ $lockerGuid }}</title>
+    <title>New passcode {{ $lockerClaim->locker->guid }}</title>
     <style>
         /* -------------------------------------
           GLOBAL RESETS
@@ -72,8 +72,9 @@
 <body>
     <div class="container">
         <h1>{{ config('app.name') }}</h1>
-        <p style="font-size: 25px; margin:0;">New passcode set</p>
-        <p style="color: red; "> {{$lockerGuid}}</p>
-        <p style="padding-bottom: 10px;">A new passcode was set.</p>
+        <p style="font-size: 25px; margin:0;">{{ $title }}</p>
+        <p style="color: red; "> {{$lockerClaim->locker->guid}}</p>
+        <p style="padding-bottom: 10px;">If you have forgotten your locker's passcode, use this link to set a new one.</p>
+        <a href="{{ $setupUrl }}">Set new key</a>
     </div>
 </body>
