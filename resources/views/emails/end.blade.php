@@ -3,7 +3,7 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>Ownership ended {{ $lockerGuid }}</title>
+    <title>Ownership ended {{ $lockerClaim->locker->guid }}</title>
     <style>
         /* -------------------------------------
           GLOBAL RESETS
@@ -73,7 +73,7 @@
     <div class="container">
         <h1>{{ config('app.name') }}</h1>
         <p style="font-size: 25px; margin:0;">Ownership ended</p>
-        <p style="color: red; "> {{$lockerGuid}}</p>
-        <p style="padding-bottom: 10px;">Locker {{$lockerGuid}} ownership has been revoked.</p>
+        <p style="color: red; "> {{$lockerClaim->locker->guid}}</p>
+        <p style="padding-bottom: 10px;">Locker {{$lockerClaim->locker->guid }} ownership has been revoked. Your locker status has changed and will be set to open.</p>
     </div>
 </body>
