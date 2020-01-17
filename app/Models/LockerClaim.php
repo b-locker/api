@@ -20,6 +20,11 @@ class LockerClaim extends Model
         'end_at',
     ];
 
+    protected $hidden = [
+        'setup_token',
+        'key_hash',
+    ];
+
     protected $dates = [
         'start_at',
         'end_at',

@@ -133,6 +133,13 @@ class LockerClaimController extends Controller
     public function setup(string $lockerGuid, int $claimId, LockerClaimUpdateRequest $request)
     {
         $lockerClaim = LockerClaim::findOrFail($claimId);
+
+        if (!$lockerClaim->locker->isCurrentlyClaimable()) {
+            return response()->json([
+                'message' => 'The locker is already claimed.',
+            ], 400);
+        }
+
         $lockerClaim->setup_token = null;
         $lockerClaim->key_hash = bcrypt($request->get('key'));
         $lockerClaim->save();
