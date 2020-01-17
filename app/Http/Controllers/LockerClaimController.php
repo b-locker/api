@@ -211,8 +211,10 @@ class LockerClaimController extends Controller
     public function liftLockdown(string $lockerGuid, int $claimId, LockerLiftLockdownRequest $request)
     {
         $lockerClaim = LockerClaim::findOrFail($claimId);
+        $lockerClaim->setup_token = null;
         $lockerClaim->failed_attempts = 0;
         $lockerClaim->save();
+
         return new LockerClaimResource($lockerClaim);
     }
 }
