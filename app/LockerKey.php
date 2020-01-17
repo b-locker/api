@@ -15,8 +15,12 @@ class LockerKey
         $this->key = $key;
     }
 
-    public function attempt(LockerClaim $lockerClaim)
+    public function attempt(?LockerClaim $lockerClaim)
     {
+        if (empty($lockerClaim)) {
+            throw new LockerKeyException('The locker is not claimed.');
+        }
+
         if (!$lockerClaim->locker->isUnlockable()) {
             throw new LockerKeyException('The locker is not unlockable. It could be locked down due to too many failed attempts.');
         }
@@ -38,6 +42,7 @@ class LockerKey
             $message .= ' You have ' . $attemptsLeft . ' attempt(s) left.';
         } else {
             $message .= ' You have no more attempts left.';
+            $message .= ' An email has been sent to the owner.';
 
             $lockerClaim->setup_token = Str::random();
             $lockerClaim->save();
