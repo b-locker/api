@@ -2,12 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\LockerKey;
+use App\Models\Client;
 use App\Models\Locker;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Mail\LockerForgotKeyMail;
+use Illuminate\Support\Facades\Mail;
+use App\Exceptions\LockerKeyException;
 use App\Http\Resources\LockerResource;
 use Illuminate\Support\Facades\Artisan;
 use App\Http\Requests\LockerUnlockRequest;
+use App\Http\Resources\LockerClaimResource;
 use App\Exceptions\NotYetImplementedException;
 
 class LockerController extends Controller
@@ -19,7 +25,7 @@ class LockerController extends Controller
      */
     public function index()
     {
-        $lockers = Locker::all();
+        $lockers = Locker::with('claims.client')->get();
         return LockerResource::collection($lockers);
     }
 
@@ -43,7 +49,10 @@ class LockerController extends Controller
      */
     public function show(string $lockerGuid)
     {
-        $locker = Locker::where('guid', $lockerGuid)->firstOrFail();
+        $locker = Locker::where('guid', $lockerGuid)
+            ->with('claims.client')
+            ->firstOrFail()
+        ;
         return new LockerResource($locker);
     }
 
@@ -82,38 +91,17 @@ class LockerController extends Controller
     {
         $locker = Locker::where('guid', $lockerGuid)->firstOrFail();
 
-        if (!$locker->isUnlockable()) {
-            return response()->json([
-                'message' => 'The locker is not unlockable. It could be locked down due to too many failed attempts.',
-            ], 400);
-        }
-
         $lockerClaim = $locker->activeClaim();
 
-        $storedKeyHash = $lockerClaim->key_hash;
-        $key = $request->get('key');
+        $lockerKey = new LockerKey($request->get('key'));
 
-        if (!password_verify($key, $storedKeyHash)) {
-            $lockerClaim->failed_attempts++;
-            $lockerClaim->save();
-
-            $message = 'The provided key does not work.';
-
-            $attemptsLeft = $lockerClaim->attemptsLeft();
-
-            if ($attemptsLeft > 0) {
-                $message .= ' You have ' . $attemptsLeft . ' attempt(s) left.';
-            } else {
-                $message .= ' You have no more attempts left.';
-            }
-
+        try {
+            $lockerKey->attempt($lockerClaim);
+        } catch (LockerKeyException $e) {
             return response()->json([
-                'message' => $message,
+                'message' => $e->getMessage(),
             ], 400);
         }
-
-        $lockerClaim->failed_attempts = 0;
-        $lockerClaim->save();
 
         $exitCode = Artisan::call('locker:unlock', [
             'lockerGuid' => $locker->guid,
@@ -127,16 +115,26 @@ class LockerController extends Controller
 
         return response()->json([
             'message' => 'OK.',
+            'data' => [
+                'claim' => new LockerClaimResource($lockerClaim),
+            ],
         ]);
     }
 
-    public function forgotKey(string $lockerGuid, Request $request)
+    public function forgotKey(string $lockerGuid)
     {
-        throw new NotYetImplementedException();
+        $locker = Locker::where('guid', $lockerGuid)->firstOrFail();
+        $activeClaim = $locker->activeClaim();
 
-        // $locker = Locker::where('guid', $lockerGuid)->firstOrFail();
-        // $activeClaim = $locker->activeClaim();
+        $activeClaim->setup_token = Str::random();
+        $activeClaim->save();
 
-        // TODO: ...
+        $client = $activeClaim->client;
+        $mail = new LockerForgotKeyMail($activeClaim);
+        Mail::to($client->email)->send($mail);
+
+        return response()->json([
+            'message' => 'OK.',
+        ]);
     }
 }

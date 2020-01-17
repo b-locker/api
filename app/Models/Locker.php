@@ -11,6 +11,10 @@ class Locker extends Model
         'guid',
     ];
 
+    protected $with = [
+        'claims',
+    ];
+
     public function isUnlockable()
     {
         if (!$this->activeClaim()) {

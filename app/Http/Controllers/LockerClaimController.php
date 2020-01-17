@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\LockerKey;
 use Carbon\Carbon;
 use App\Models\Client;
 use App\Models\Locker;
@@ -9,8 +10,12 @@ use App\Models\LockerClaim;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Mail\LockerSetupMail;
+use App\Mail\LockerEndOwnershipMail;
 use Illuminate\Support\Facades\Mail;
+use App\Exceptions\LockerKeyException;
+use App\Http\Requests\LockerEndRequest;
 use App\Http\Resources\LockerClaimResource;
+use App\Http\Requests\LockerUpdateKeyRequest;
 use App\Exceptions\NotYetImplementedException;
 use App\Http\Requests\LockerClaimStoreRequest;
 use App\Http\Requests\LockerClaimUpdateRequest;
@@ -47,26 +52,20 @@ class LockerClaimController extends Controller
             'email' => $email,
         ]);
 
-        $startMoment = $request->get('start_at', Carbon::now());
-        $endMoment = $request->get('end_at', Carbon::now()->addDays(7));
-
-        $startMomentParsed = Carbon::parse($startMoment);
-        $endMomentParsed = Carbon::parse($endMoment);
-
         if (!$locker->isCurrentlyClaimable()) {
+            $activeClaim = $locker->activeClaim();
+
             return response()->json([
                 'message' =>
-                    'The locker is not available, because it is already ' .
-                    'claimed somewhere between ' . $startMomentParsed .
-                    ' and ' . $endMomentParsed . '.',
+                    'The locker is not available, because it is already' .
+                    ' claimed between ' . $activeClaim->start_at .
+                    ' and ' . $activeClaim->end_at . '.',
             ], 400);
         }
 
         $lockerClaim = $client->lockerClaims()->create([
             'locker_id' => $locker->id,
             'setup_token' => Str::random(),
-            'start_at' => $startMomentParsed,
-            'end_at' => $endMomentParsed,
         ]);
 
         $mail = new LockerSetupMail($lockerClaim);
@@ -130,8 +129,81 @@ class LockerClaimController extends Controller
     public function setup(string $lockerGuid, int $claimId, LockerClaimUpdateRequest $request)
     {
         $lockerClaim = LockerClaim::findOrFail($claimId);
+        $activeClaim = $lockerClaim->locker->activeClaim();
+
+        if (
+            $this->isLockerActive($lockerClaim->locker) &&
+            $this->isOtherClaim($lockerClaim->id, $activeClaim->id)
+
+        ) {
+            return response()->json([
+                'message' => 'The locker is already claimed.',
+            ], 400);
+        }
+
         $lockerClaim->setup_token = null;
         $lockerClaim->key_hash = bcrypt($request->get('key'));
+
+        $lockerClaim->start_at = Carbon::now();
+        $lockerClaim->end_at = Carbon::now()->addDays(7);
+
+        $lockerClaim->save();
+
+        return new LockerClaimResource($lockerClaim);
+    }
+
+    private function isOtherClaim(int $claim1, int $claim2)
+    {
+        return ($claim1 !== $claim2);
+    }
+
+    private function isLockerActive(Locker $locker)
+    {
+        return (!$locker->isCurrentlyClaimable());
+    }
+
+    public function end(string $lockerGuid, int $claimId, LockerEndRequest $request)
+    {
+        $lockerClaim = LockerClaim::findOrFail($claimId);
+        $key = $request->get('key');
+
+        $lockerKey = new LockerKey($key);
+
+        try {
+            $lockerKey->attempt($lockerClaim);
+        } catch (LockerKeyException $e) {
+            return response()->json([
+                'message' => $e->getMessage(),
+            ], 400);
+        }
+
+        $lockerClaim->end_at = Carbon::now();
+        $lockerClaim->save();
+
+        $client = $lockerClaim->client;
+        $mail = new LockerEndOwnershipMail($lockerClaim);
+        Mail::to($client->email)->send($mail);
+
+        return new LockerClaimResource($lockerClaim);
+    }
+
+    // Using regular Request here for now because it requires 2 keys, the current and new ones.
+    public function updateKey(string $lockerGuid, int $claimId, LockerUpdateKeyRequest $request)
+    {
+        $lockerClaim = LockerClaim::findOrFail($claimId);
+        $key = $request->get('key');
+
+        $lockerKey = new LockerKey($key);
+
+        try {
+            $lockerKey->attempt($lockerClaim);
+        } catch (LockerKeyException $e) {
+            return response()->json([
+                'message' => $e->getMessage(),
+            ], 400);
+        }
+
+        $lockerClaim->key_hash = bcrypt($request->get('new_key'));
         $lockerClaim->save();
 
         return new LockerClaimResource($lockerClaim);
