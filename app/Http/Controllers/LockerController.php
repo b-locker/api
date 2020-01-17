@@ -13,6 +13,7 @@ use App\Exceptions\LockerKeyException;
 use App\Http\Resources\LockerResource;
 use Illuminate\Support\Facades\Artisan;
 use App\Http\Requests\LockerUnlockRequest;
+use App\Http\Resources\LockerClaimResource;
 use App\Exceptions\NotYetImplementedException;
 
 class LockerController extends Controller
@@ -114,7 +115,9 @@ class LockerController extends Controller
 
         return response()->json([
             'message' => 'OK.',
-            'claimId' => $lockerClaim->id ,
+            'data' => [
+                'claim' => new LockerClaimResource($lockerClaim),
+            ],
         ]);
     }
 

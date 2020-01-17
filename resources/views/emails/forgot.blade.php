@@ -3,7 +3,7 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>New passcode {{ $lockerClaim->locker->guid }}</title>
+    <title>{{ $subject }}</title>
     <style>
         /* -------------------------------------
           GLOBAL RESETS

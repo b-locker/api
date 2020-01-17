@@ -13,7 +13,9 @@ use App\Mail\LockerSetupMail;
 use App\Mail\LockerEndOwnershipMail;
 use Illuminate\Support\Facades\Mail;
 use App\Exceptions\LockerKeyException;
+use App\Http\Requests\LockerEndRequest;
 use App\Http\Resources\LockerClaimResource;
+use App\Http\Requests\LockerUpdateKeyRequest;
 use App\Exceptions\NotYetImplementedException;
 use App\Http\Requests\LockerClaimStoreRequest;
 use App\Http\Requests\LockerClaimUpdateRequest;
@@ -130,8 +132,9 @@ class LockerClaimController extends Controller
         $activeClaim = $lockerClaim->locker->activeClaim();
 
         if (
-            $this->isOtherClaim($lockerClaim->id, $activeClaim->id) &&
-            $this->isLockerActive($lockerClaim->locker)
+            $this->isLockerActive($lockerClaim->locker) &&
+            $this->isOtherClaim($lockerClaim->id, $activeClaim->id)
+
         ) {
             return response()->json([
                 'message' => 'The locker is already claimed.',
@@ -159,7 +162,7 @@ class LockerClaimController extends Controller
         return (!$locker->isCurrentlyClaimable());
     }
 
-    public function end(string $lockerGuid, int $claimId, LockerClaimUpdateRequest $request)
+    public function end(string $lockerGuid, int $claimId, LockerEndRequest $request)
     {
         $lockerClaim = LockerClaim::findOrFail($claimId);
         $key = $request->get('key');
@@ -185,7 +188,7 @@ class LockerClaimController extends Controller
     }
 
     // Using regular Request here for now because it requires 2 keys, the current and new ones.
-    public function updateKey(string $lockerGuid, int $claimId, Request $request)
+    public function updateKey(string $lockerGuid, int $claimId, LockerUpdateKeyRequest $request)
     {
         $lockerClaim = LockerClaim::findOrFail($claimId);
         $key = $request->get('key');
@@ -200,26 +203,9 @@ class LockerClaimController extends Controller
             ], 400);
         }
 
-        $lockerClaim->key_hash = bcrypt($request->get('newkey'));
+        $lockerClaim->key_hash = bcrypt($request->get('new_key'));
         $lockerClaim->save();
 
         return new LockerClaimResource($lockerClaim);
-    }
-
-    public function setNewKey(string $lockerGuid, int $claimId, LockerClaimUpdateRequest $request)
-    {
-        $lockerClaim = LockerClaim::findOrFail($claimId);
-        $lockerClaim->setup_token = null;
-        $lockerClaim->key_hash = bcrypt($request->get('key'));
-        $lockerClaim->save();
-
-        return new LockerClaimResource($lockerClaim);
-
-        // Overwrite old key.
-
-
-        return response()->json([
-            'message' => 'OK.',
-        ]);
     }
 }

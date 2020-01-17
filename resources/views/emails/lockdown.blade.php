@@ -3,7 +3,7 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>Lockdown locker {{ $lockerClaim->locker->guid }}</title>
+    <title>{{ $subject }}</title>
     <style>
         /* -------------------------------------
           GLOBAL RESETS
@@ -72,7 +72,7 @@
 <body>
     <div class="container">
         <h1>{{ config('app.name') }}</h1>
-        <p style="font-size: 25px; margin:0;">Lockdown</p>
+        <p style="font-size: 25px; margin:0;">{{ $title }}</p>
         <p style="color: red; "> {{$lockerClaim->locker->guid}}</p>
         <p style="padding-bottom: 10px;">Due to repeated failed unlock attempts, we have put your locker in lockdown. Click the link to uplift the lockdown.</p>
         <a href="{{ $setupUrl }}">Lift lockdown</a>
