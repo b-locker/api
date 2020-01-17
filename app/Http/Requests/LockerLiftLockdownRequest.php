@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use App\Rules\ValidSetupToken;
 use Illuminate\Foundation\Http\FormRequest;
 
-class LockerClaimUpdateRequest extends FormRequest
+class LockerLiftLockdownRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,7 +25,6 @@ class LockerClaimUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'key' => 'required|min:6|max:100',
             'setup_token' => [
                 'required',
                 new ValidSetupToken($this->claimId),
