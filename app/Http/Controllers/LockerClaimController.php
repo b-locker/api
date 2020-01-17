@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use App\Mail\LockerSetupMail;
 use App\Mail\LockerEndOwnershipMail;
 use Illuminate\Support\Facades\Mail;
+use App\Exceptions\LockerKeyException;
 use App\Http\Resources\LockerClaimResource;
 use App\Exceptions\NotYetImplementedException;
 use App\Http\Requests\LockerClaimStoreRequest;
