@@ -18,8 +18,13 @@ class LockerClaimResource extends JsonResource
             'id' => $this->id,
             'is_set_up' => $this->isSetUp(),
             'is_active' => $this->isActive(),
+            'attempts' => [
+                'failed' => $this->failed_attempts,
+                'left' => $this->attemptsLeft(),
+            ],
             'start_at' => $this->start_at,
             'end_at' => $this->end_at,
+            'client' => new ClientResource($this->whenLoaded('client')),
         ];
     }
 }

@@ -22,7 +22,7 @@ class LockerController extends Controller
      */
     public function index()
     {
-        $lockers = Locker::all();
+        $lockers = Locker::with('claims.client')->get();
         return LockerResource::collection($lockers);
     }
 
@@ -46,7 +46,10 @@ class LockerController extends Controller
      */
     public function show(string $lockerGuid)
     {
-        $locker = Locker::where('guid', $lockerGuid)->firstOrFail();
+        $locker = Locker::where('guid', $lockerGuid)
+            ->with('claims.client')
+            ->firstOrFail()
+        ;
         return new LockerResource($locker);
     }
 
