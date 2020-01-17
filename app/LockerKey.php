@@ -38,8 +38,6 @@ class LockerKey
             $message .= ' You have ' . $attemptsLeft . ' attempt(s) left.';
         } else {
             $message .= ' You have no more attempts left.';
-            // set token
-            // send lockdown mail WITH token
 
             $lockerClaim->setup_token = Str::random();
             $lockerClaim->save();
