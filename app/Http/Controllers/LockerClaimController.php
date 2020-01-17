@@ -19,6 +19,7 @@ use App\Http\Requests\LockerUpdateKeyRequest;
 use App\Exceptions\NotYetImplementedException;
 use App\Http\Requests\LockerClaimStoreRequest;
 use App\Http\Requests\LockerClaimUpdateRequest;
+use App\Http\Requests\LockerLiftLockdownRequest;
 
 class LockerClaimController extends Controller
 {
@@ -204,6 +205,14 @@ class LockerClaimController extends Controller
         $lockerClaim->key_hash = bcrypt($request->get('new_key'));
         $lockerClaim->save();
 
+        return new LockerClaimResource($lockerClaim);
+    }
+
+    public function liftLockdown(string $lockerGuid, int $claimId, LockerLiftLockdownRequest $request)
+    {
+        $lockerClaim = LockerClaim::findOrFail($claimId);
+        $lockerClaim->failed_attempts = 0;
+        $lockerClaim->save();
         return new LockerClaimResource($lockerClaim);
     }
 }

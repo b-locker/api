@@ -42,6 +42,7 @@ class LockerKey
             $message .= ' You have ' . $attemptsLeft . ' attempt(s) left.';
         } else {
             $message .= ' You have no more attempts left.';
+            $message .= ' An email has been sent to the owner.';
 
             $lockerClaim->setup_token = Str::random();
             $lockerClaim->save();

@@ -38,6 +38,7 @@ Route::delete('/lockers/{lockerGuid}/claims/{claimId}', 'LockerClaimController@d
 Route::post('/lockers/{lockerGuid}/claims/{claimId}/setup', 'LockerClaimController@setup')->name('lockers.claims.setup');
 Route::post('/lockers/{lockerGuid}/claims/{claimId}/update-key', 'LockerClaimController@updateKey')->name('lockers.claims.update.key');
 Route::post('/lockers/{lockerGuid}/claims/{claimId}/end', 'LockerClaimController@end')->name('lockers.claims.end');
+Route::post('/lockers/{lockerGuid}/claims/{claimId}/lift-lockdown', 'LockerClaimController@liftLockdown')->name('lockers.claims.lift.lockdown');
 
 // Route::group(['middleware' => ['jwt.verify']], function() {
 //     Route::get('/lockers', 'LockerController@index')->name('lockers.index');
