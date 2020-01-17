@@ -15,8 +15,12 @@ class LockerKey
         $this->key = $key;
     }
 
-    public function attempt(LockerClaim $lockerClaim)
+    public function attempt(?LockerClaim $lockerClaim)
     {
+        if (empty($lockerClaim)) {
+            throw new LockerKeyException('The locker is not claimed.');
+        }
+
         if (!$lockerClaim->locker->isUnlockable()) {
             throw new LockerKeyException('The locker is not unlockable. It could be locked down due to too many failed attempts.');
         }
