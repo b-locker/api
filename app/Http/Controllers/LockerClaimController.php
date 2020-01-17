@@ -127,8 +127,12 @@ class LockerClaimController extends Controller
     public function setup(string $lockerGuid, int $claimId, LockerClaimUpdateRequest $request)
     {
         $lockerClaim = LockerClaim::findOrFail($claimId);
+        $activeClaim = $lockerClaim->locker->activeClaim();
 
-        if (!$lockerClaim->locker->isCurrentlyClaimable()) {
+        if (
+            $this->isOtherClaim($lockerClaim->id, $activeClaim->id) &&
+            $this->isLockerActive($lockerClaim->locker)
+        ) {
             return response()->json([
                 'message' => 'The locker is already claimed.',
             ], 400);
@@ -143,6 +147,16 @@ class LockerClaimController extends Controller
         $lockerClaim->save();
 
         return new LockerClaimResource($lockerClaim);
+    }
+
+    private function isOtherClaim(int $claim1, int $claim2)
+    {
+        return ($claim1 !== $claim2);
+    }
+
+    private function isLockerActive(Locker $locker)
+    {
+        return (!$locker->isCurrentlyClaimable());
     }
 
     public function end(string $lockerGuid, int $claimId, LockerClaimUpdateRequest $request)
