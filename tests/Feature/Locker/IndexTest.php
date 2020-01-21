@@ -22,6 +22,7 @@ class IndexTest extends TestCase
                     return [
                         'id' => $locker->id,
                         'guid' => $locker->guid,
+                        'active_claim' => null,
                     ];
                 })->toArray(),
             ])
