@@ -9,18 +9,15 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class UpdateTest extends TestCase
 {
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
+    use RefreshDatabase;
+
     public function test_can_update_record()
     {
         $locker = factory(Locker::class)->create();
 
         $payload = [
-            'id' => $locker->id,
-            'guid' => 'new-guid-test',
+            'lockerGuid' => $locker->guid,
+            'guid' => 'new-guid', // 8 chars
         ];
 
         $this->json('PUT', route('lockers.update', $payload))
@@ -28,7 +25,8 @@ class UpdateTest extends TestCase
             ->assertExactJson([
                 'data' => [
                     'id' => $locker->id,
-                    'guid' => 'new-guid-test',
+                    'guid' => 'new-guid',
+                    'active_claim' => null,
                 ],
             ])
         ;

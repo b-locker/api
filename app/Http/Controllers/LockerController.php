@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Exceptions\LockerKeyException;
 use App\Http\Resources\LockerResource;
 use Illuminate\Support\Facades\Artisan;
+use App\Http\Requests\LockerStoreRequest;
 use App\Http\Requests\LockerUnlockRequest;
 use App\Http\Resources\LockerClaimResource;
 use App\Exceptions\NotYetImplementedException;
@@ -35,9 +36,10 @@ class LockerController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store()
+    public function store(LockerStoreRequest $request)
     {
-        $locker = Locker::create(['guid' => Str::random(8)]);
+        $guid = $request->input('guid', Str::random(8));
+        $locker = Locker::create(['guid' => $guid]);
         return new LockerResource($locker);
     }
 
@@ -63,7 +65,7 @@ class LockerController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function update(string $lockerGuid, Request $request)
+    public function update(string $lockerGuid, LockerStoreRequest $request)
     {
         $locker = Locker::where('guid', $lockerGuid)->firstOrFail();
         $locker->update($request->only('guid'));
