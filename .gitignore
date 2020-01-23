@@ -5,6 +5,7 @@
 /vendor
 /*.cache
 .env
+.env.testing
 .env.backup
 Homestead.json
 Homestead.yaml

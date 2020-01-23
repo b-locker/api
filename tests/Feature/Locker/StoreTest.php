@@ -8,15 +8,12 @@ use Tests\TestCase;
 
 class StoreTest extends TestCase
 {
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
-    public function test_can_store_record()
+    use RefreshDatabase;
+
+    public function test_can_store_1_record()
     {
         $payload = [
-            'guid' => 'guid-test',
+            'guid' => 'guidtest', // 8 chars
         ];
 
         $response = $this->json('POST', route('lockers.store', $payload));
@@ -27,6 +24,7 @@ class StoreTest extends TestCase
                 'data' => [
                     'id' => $responseData->id,
                     'guid' => $payload['guid'],
+                    'active_claim' => null,
                 ],
             ])
         ;
