@@ -40,14 +40,14 @@ Route::post('/lockers/{lockerGuid}/claims/{claimId}/update-key', 'LockerClaimCon
 Route::post('/lockers/{lockerGuid}/claims/{claimId}/end', 'LockerClaimController@end')->name('lockers.claims.end');
 Route::post('/lockers/{lockerGuid}/claims/{claimId}/lift-lockdown', 'LockerClaimController@liftLockdown')->name('lockers.claims.lift.lockdown');
 
-// Route::group(['middleware' => ['jwt.verify']], function() {
-//     Route::get('/lockers', 'LockerController@index')->name('lockers.index');
-// });
+Route::group(['middleware' => ['jwt.verify']], function() {
+   Route::get('/clients', 'ClientController@index')->name('clients.index');
+});
 
 /**
  * Clients
  */
-Route::get('/clients', 'ClientController@index')->name('clients.index');
+// Route::get('/clients', 'ClientController@index')->name('clients.index');
 Route::post('/clients', 'ClientController@store')->name('clients.store');
 Route::get('/clients/{id}', 'ClientController@show')->name('clients.show');
 Route::put('/clients/{id}', 'ClientController@update')->name('clients.update');
