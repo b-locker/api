@@ -1,7 +1,6 @@
 <?php
 
 // Open routes.
-Route::post('/managers/register', 'ManagerController@register')->name('managers.register'); // Eventually protect this too, allow no random registrants.
 Route::post('/managers/login', 'ManagerController@login')->name('managers.login');
 
 Route::get('/lockers/{lockerGuid}', 'LockerController@show')->name('lockers.show');
@@ -38,6 +37,8 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::delete('/clients/{id}', 'ClientController@destroy')->name('clients.destroy');
 
     // Manager.
+    Route::post('/managers/register', 'ManagerController@register')->name('managers.register');
+
     Route::get('/managers', 'ManagerController@index')->name('managers.index');
     Route::post('/managers', 'ManagerController@store')->name('managers.store');
     Route::get('/managers/{id}', 'ManagerController@show')->name('managers.show');
