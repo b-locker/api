@@ -151,7 +151,7 @@ class LockerClaimController extends Controller
         $lockerClaim->save();
 
         $exitCode = Artisan::call('locker:claim', [
-            'lockerGuid' => $locker->guid,
+            'lockerGuid' => $activeClaim->locker->guid,
         ]);
 
         if ($exitCode !== 0) {
@@ -183,6 +183,17 @@ class LockerClaimController extends Controller
     public function end(string $lockerGuid, int $claimId, LockerEndRequest $request)
     {
         $lockerClaim = LockerClaim::findOrFail($claimId);
+        $activeClaim = $lockerClaim->locker->activeClaim();
+
+        if (
+            $this->isLockerActive($lockerClaim->locker) &&
+            $this->isOtherClaim($lockerClaim->id, $activeClaim->id)
+        ) {
+            return response()->json([
+                'message' => 'Cannot end a different locker claim.',
+            ], 400);
+        }
+
         $key = $request->get('key');
 
         $lockerKey = new LockerKey($key);
@@ -203,7 +214,7 @@ class LockerClaimController extends Controller
         Mail::to($client->email)->send($mail);
 
         $exitCode = Artisan::call('locker:endclaim', [
-            'lockerGuid' => $locker->guid,
+            'lockerGuid' => $activeClaim->locker->guid,
         ]);
 
         if ($exitCode !== 0) {
