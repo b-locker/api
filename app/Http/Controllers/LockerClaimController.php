@@ -14,6 +14,7 @@ use App\Mail\LockerEndOwnershipMail;
 use Illuminate\Support\Facades\Mail;
 use App\Exceptions\LockerKeyException;
 use App\Http\Requests\LockerEndRequest;
+use Illuminate\Support\Facades\Artisan;
 use App\Http\Resources\LockerClaimResource;
 use App\Http\Requests\LockerUpdateKeyRequest;
 use App\Exceptions\NotYetImplementedException;
