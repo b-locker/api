@@ -149,6 +149,23 @@ class LockerClaimController extends Controller
 
         $lockerClaim->save();
 
+        $exitCode = Artisan::call('locker:claim', [
+            'lockerGuid' => $locker->guid,
+        ]);
+
+        if ($exitCode !== 0) {
+            return response()->json([
+                'message' => 'Oops. Something wrong happened at our side.',
+            ], 500);
+        }
+
+        return response()->json([
+            'message' => 'OK.',
+            'data' => [
+                'claim' => new LockerClaimResource($lockerClaim),
+            ],
+        ]);
+
         return new LockerClaimResource($lockerClaim);
     }
 
@@ -183,6 +200,23 @@ class LockerClaimController extends Controller
         $client = $lockerClaim->client;
         $mail = new LockerEndOwnershipMail($lockerClaim);
         Mail::to($client->email)->send($mail);
+
+        $exitCode = Artisan::call('locker:endclaim', [
+            'lockerGuid' => $locker->guid,
+        ]);
+
+        if ($exitCode !== 0) {
+            return response()->json([
+                'message' => 'Oops. Something wrong happened at our side.',
+            ], 500);
+        }
+
+        return response()->json([
+            'message' => 'OK.',
+            'data' => [
+                'claim' => new LockerClaimResource($lockerClaim),
+            ],
+        ]);
 
         return new LockerClaimResource($lockerClaim);
     }
