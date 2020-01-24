@@ -151,7 +151,7 @@ class LockerClaimController extends Controller
         $lockerClaim->save();
 
         $exitCode = Artisan::call('locker:claim', [
-            'lockerGuid' => $activeClaim->locker->guid,
+            'lockerGuid' => $lockerClaim->locker->guid,
         ]);
 
         if ($exitCode !== 0) {
@@ -214,7 +214,7 @@ class LockerClaimController extends Controller
         Mail::to($client->email)->send($mail);
 
         $exitCode = Artisan::call('locker:endclaim', [
-            'lockerGuid' => $activeClaim->locker->guid,
+            'lockerGuid' => $lockerClaim->locker->guid,
         ]);
 
         if ($exitCode !== 0) {
