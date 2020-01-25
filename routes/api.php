@@ -25,7 +25,7 @@ Route::put('/lockers/{lockerGuid}', 'LockerController@update')->name('lockers.up
 Route::delete('/lockers/{lockerGuid}', 'LockerController@destroy')->name('lockers.destroy');
 
 Route::post('/lockers/{lockerGuid}/unlock', 'LockerController@unlock')->name('lockers.unlock');
-Route::post('/lockers/{lockerGuid}/forgot-key', 'LockerController@forgotKey')->name('lockers.forgot.key');
+Route::post('/lockers/{lockerGuid}/forgot-key', 'LockerController@forgotKey')->name('lockers.forgot-key');
 
 /**
  * Locker claims
@@ -36,9 +36,9 @@ Route::get('/lockers/{lockerGuid}/claims/{claimId}', 'LockerClaimController@show
 Route::delete('/lockers/{lockerGuid}/claims/{claimId}', 'LockerClaimController@destroy')->name('lockers.claims.destroy');
 
 Route::post('/lockers/{lockerGuid}/claims/{claimId}/setup', 'LockerClaimController@setup')->name('lockers.claims.setup');
-Route::post('/lockers/{lockerGuid}/claims/{claimId}/update-key', 'LockerClaimController@updateKey')->name('lockers.claims.update.key');
+Route::post('/lockers/{lockerGuid}/claims/{claimId}/update-key', 'LockerClaimController@updateKey')->name('lockers.claims.update-key');
 Route::post('/lockers/{lockerGuid}/claims/{claimId}/end', 'LockerClaimController@end')->name('lockers.claims.end');
-Route::post('/lockers/{lockerGuid}/claims/{claimId}/lift-lockdown', 'LockerClaimController@liftLockdown')->name('lockers.claims.lift.lockdown');
+Route::post('/lockers/{lockerGuid}/claims/{claimId}/lift-lockdown', 'LockerClaimController@liftLockdown')->name('lockers.claims.lift-lockdown');
 
 // Route::group(['middleware' => ['jwt.verify']], function() {
 //     Route::get('/lockers', 'LockerController@index')->name('lockers.index');
