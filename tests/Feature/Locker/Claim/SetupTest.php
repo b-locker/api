@@ -46,11 +46,13 @@ class SetupTest extends TestCase
         $activeLockerClaim = factory(LockerClaim::class)->create([
             'locker_id' => $locker->id,
             'start_at' => Carbon::now(),
+            'end_at' => Carbon::now()->addDays(7),
         ]);
         $lockerClaimToSetUp = factory(LockerClaim::class)->create([
             'locker_id' => $locker->id,
             'key_hash' => null,
             'start_at' => Carbon::now(),
+            'end_at' => Carbon::now()->addDays(7),
         ]);
 
         $payload = [
