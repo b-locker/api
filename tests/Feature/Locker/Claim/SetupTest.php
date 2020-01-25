@@ -13,7 +13,7 @@ class SetupTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_can_setup_available_locker_claim_swith_valid_key()
+    public function test_can_setup_available_locker_claim_with_valid_key()
     {
         $locker = factory(Locker::class)->create();
         $lockerClaim = factory(LockerClaim::class)->create([
