@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use App\LockerKey;
 use Carbon\Carbon;
 use App\Models\Client;
@@ -12,7 +13,6 @@ use Illuminate\Http\Request;
 use App\Mail\LockerSetupMail;
 use App\Mail\LockerEndOwnershipMail;
 use Illuminate\Support\Facades\Mail;
-use App\Exceptions\LockerKeyException;
 use App\Http\Requests\LockerEndRequest;
 use App\Http\Resources\LockerClaimResource;
 use App\Http\Requests\LockerUpdateKeyRequest;
@@ -171,7 +171,7 @@ class LockerClaimController extends Controller
 
         try {
             $lockerKey->attempt($lockerClaim);
-        } catch (LockerKeyException $e) {
+        } catch (Exception $e) {
             return response()->json([
                 'message' => $e->getMessage(),
             ], 400);
@@ -196,7 +196,7 @@ class LockerClaimController extends Controller
 
         try {
             $lockerKey->attempt($lockerClaim);
-        } catch (LockerKeyException $e) {
+        } catch (Exception $e) {
             return response()->json([
                 'message' => $e->getMessage(),
             ], 400);
