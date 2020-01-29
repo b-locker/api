@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use Carbon\Carbon;
 use App\Models\LockerClaim;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
@@ -25,7 +26,7 @@ class LockerSetupMail extends Mailable
     public function __construct(LockerClaim $lockerClaim)
     {
         $this->title = 'Set up your locker';
-        $this->subject = $this->title . ' - ' . config('app.name');
+        $this->subject = $this->title .' - ' . Carbon::now()->timezone('Europe/Amsterdam')->format('H:i') . ' - ' . config('app.name');
 
         $this->lockerClaim = $lockerClaim;
 
