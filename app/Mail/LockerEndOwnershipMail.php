@@ -25,7 +25,7 @@ class LockerEndOwnershipMail extends Mailable
     public function __construct(LockerClaim $lockerClaim)
     {
         $this->title = 'Locker ownership ended';
-        $this->subject = $this->title .' - ' . Carbon::now()->addHour()->format('H:i') . ' - ' . config('app.name');
+        $this->subject = $this->title .' - ' . Carbon::now()->timezone('Europe/Amsterdam')->format('H:i') . ' - ' . config('app.name');
 
         $this->lockerClaim = $lockerClaim;
     }
