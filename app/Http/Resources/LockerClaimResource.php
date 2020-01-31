@@ -19,7 +19,7 @@ class LockerClaimResource extends JsonResource
             'is_set_up' => $this->isSetUp(),
             'is_active' => $this->isActive(),
             'attempts' => [
-                'failed' => $this->failed_attempts,
+                'failed' => (int) $this->failed_attempts,
                 'left' => $this->attemptsLeft(),
             ],
             'start_at' => $this->start_at,

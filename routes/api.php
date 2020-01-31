@@ -5,7 +5,7 @@ Route::post('/managers/login', 'ManagerController@login')->name('managers.login'
 
 Route::get('/lockers/{lockerGuid}', 'LockerController@show')->name('lockers.show');
 Route::post('/lockers/{lockerGuid}/unlock', 'LockerController@unlock')->name('lockers.unlock');
-Route::post('/lockers/{lockerGuid}/forgot-key', 'LockerController@forgotKey')->name('lockers.forgot.key');
+Route::post('/lockers/{lockerGuid}/forgot-key', 'LockerController@forgotKey')->name('lockers.forgot-key');
 
 // Clients routes open because of lacking client-authenticaiton
 Route::get('/lockers/{lockerGuid}/claims', 'LockerClaimController@index')->name('lockers.claims.index');
@@ -14,9 +14,9 @@ Route::get('/lockers/{lockerGuid}/claims/{claimId}', 'LockerClaimController@show
 Route::delete('/lockers/{lockerGuid}/claims/{claimId}', 'LockerClaimController@destroy')->name('lockers.claims.destroy');
 
 Route::post('/lockers/{lockerGuid}/claims/{claimId}/setup', 'LockerClaimController@setup')->name('lockers.claims.setup');
-Route::post('/lockers/{lockerGuid}/claims/{claimId}/update-key', 'LockerClaimController@updateKey')->name('lockers.claims.update.key');
+Route::post('/lockers/{lockerGuid}/claims/{claimId}/update-key', 'LockerClaimController@updateKey')->name('lockers.claims.update-key');
 Route::post('/lockers/{lockerGuid}/claims/{claimId}/end', 'LockerClaimController@end')->name('lockers.claims.end');
-Route::post('/lockers/{lockerGuid}/claims/{claimId}/lift-lockdown', 'LockerClaimController@liftLockdown')->name('lockers.claims.lift.lockdown');
+Route::post('/lockers/{lockerGuid}/claims/{claimId}/lift-lockdown', 'LockerClaimController@liftLockdown')->name('lockers.claims.lift-lockdown');
 
 
 

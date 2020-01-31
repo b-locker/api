@@ -1,6 +1,6 @@
-# B-Locker API Server
+# B-Locker API
 
-_The official B-Locker API Server._
+_The official B-Locker API._
 
 
 ## Pre-requisites
@@ -31,3 +31,16 @@ _The official B-Locker API Server._
 1. _Do not forget to change database config in `.env`_
 1. _Do not forget to change e-mail config in `.env`_
 1. _Do not forget to change HW_TUNNEL_BIN config in `.env`_
+
+
+## Automated testing
+
+For unit and feature tests, it is important that the database connection works.
+The configuration can be set with a `.env.testing` file, which can be based on
+`.env.example`.
+
+Once the configuration is set up, tests can be run using:
+```
+clear; composer run tests
+```
+...which clears the terminal screen and runs the tests.
